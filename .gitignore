@@ -5,6 +5,7 @@
 
 # Node.js
 node_modules/
+frontend/dist/
 
 # Python virtual environments
 venv/
