@@ -1,1 +1,1 @@
-"""Model-adjacent data preparation code (no prediction model yet)."""
+"""Leakage-aware SCADA preprocessing and baseline forecasting models."""
