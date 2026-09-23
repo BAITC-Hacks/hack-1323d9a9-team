@@ -1,0 +1,229 @@
+{
+  "status": "COMPLETE",
+  "station_timezone": "Asia/Almaty",
+  "first_issue_time": "2026-01-30T19:00:00Z",
+  "last_issue_time": "2026-02-27T19:00:00Z",
+  "february_start": "2026-01-31T19:00:00Z",
+  "february_end_exclusive": "2026-02-28T19:00:00Z",
+  "issue_count": 29,
+  "complete_runs": 29,
+  "forecast_rows": 2784,
+  "february_eligible_rows": 1398,
+  "evaluation_rows": 1344,
+  "expected_hours_per_turbine": 672,
+  "selected_hours_per_turbine": {
+    "turbine_1": 672,
+    "turbine_2": 672
+  },
+  "official_schedule": true,
+  "horizon_hours": 48,
+  "minimum_evaluation_lead_hours": 24,
+  "overlap_selection": "For each turbine and February valid hour, use the latest issue_time with 24 <= lead_hour <= 48.",
+  "leakage_checks": "Saved result matches artifact; archived forecast source and SHA-256; weather_run_time + publication delay (at least 6h) <= issue_time < valid_time; archived model available_at <= issue_time; exact 1-48h leads; complete turbines; finite clipped power.",
+  "evaluation": "Prediction-only February view. February actual power is unavailable; no February accuracy metric is claimed.",
+  "runs": [
+    {
+      "issue_time": "2026-01-30T19:00:00Z",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "rolling/forecast_20260130T190000Z_v1_d65d292371a2.json",
+      "forecast_rows": 96
+    },
+    {
+      "issue_time": "2026-01-31T19:00:00Z",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "rolling/forecast_20260131T190000Z_v1_8935d93ffd2b.json",
+      "forecast_rows": 96
+    },
+    {
+      "issue_time": "2026-02-01T19:00:00Z",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "rolling/forecast_20260201T190000Z_v1_4ab7fa93e482.json",
+      "forecast_rows": 96
+    },
+    {
+      "issue_time": "2026-02-02T19:00:00Z",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "rolling/forecast_20260202T190000Z_v1_9f9616ae2692.json",
+      "forecast_rows": 96
+    },
+    {
+      "issue_time": "2026-02-03T19:00:00Z",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "rolling/forecast_20260203T190000Z_v1_99783b5fdd6e.json",
+      "forecast_rows": 96
+    },
+    {
+      "issue_time": "2026-02-04T19:00:00Z",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "rolling/forecast_20260204T190000Z_v1_8072797fa781.json",
+      "forecast_rows": 96
+    },
+    {
+      "issue_time": "2026-02-05T19:00:00Z",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "rolling/forecast_20260205T190000Z_v1_d08a06f60327.json",
+      "forecast_rows": 96
+    },
+    {
+      "issue_time": "2026-02-06T19:00:00Z",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "rolling/forecast_20260206T190000Z_v1_0818277aecd3.json",
+      "forecast_rows": 96
+    },
+    {
+      "issue_time": "2026-02-07T19:00:00Z",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "rolling/forecast_20260207T190000Z_v1_00a31b0d5884.json",
+      "forecast_rows": 96
+    },
+    {
+      "issue_time": "2026-02-08T19:00:00Z",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "rolling/forecast_20260208T190000Z_v1_63516a9aae2f.json",
+      "forecast_rows": 96
+    },
+    {
+      "issue_time": "2026-02-09T19:00:00Z",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "rolling/forecast_20260209T190000Z_v1_af1b913d5f7c.json",
+      "forecast_rows": 96
+    },
+    {
+      "issue_time": "2026-02-10T19:00:00Z",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "rolling/forecast_20260210T190000Z_v1_99d28e82be64.json",
+      "forecast_rows": 96
+    },
+    {
+      "issue_time": "2026-02-11T19:00:00Z",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "rolling/forecast_20260211T190000Z_v1_0dc7616bdbc2.json",
+      "forecast_rows": 96
+    },
+    {
+      "issue_time": "2026-02-12T19:00:00Z",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "rolling/forecast_20260212T190000Z_v1_13e5ffd59763.json",
+      "forecast_rows": 96
+    },
+    {
+      "issue_time": "2026-02-13T19:00:00Z",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "rolling/forecast_20260213T190000Z_v1_ca91d0acb668.json",
+      "forecast_rows": 96
+    },
+    {
+      "issue_time": "2026-02-14T19:00:00Z",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "rolling/forecast_20260214T190000Z_v1_fc1f4c5d6598.json",
+      "forecast_rows": 96
+    },
+    {
+      "issue_time": "2026-02-15T19:00:00Z",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "rolling/forecast_20260215T190000Z_v1_94fc1ab61a2f.json",
+      "forecast_rows": 96
+    },
+    {
+      "issue_time": "2026-02-16T19:00:00Z",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "rolling/forecast_20260216T190000Z_v1_4cc06d70880b.json",
+      "forecast_rows": 96
+    },
+    {
+      "issue_time": "2026-02-17T19:00:00Z",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "rolling/forecast_20260217T190000Z_v1_9e6d86563866.json",
+      "forecast_rows": 96
+    },
+    {
+      "issue_time": "2026-02-18T19:00:00Z",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "rolling/forecast_20260218T190000Z_v1_681a68d44c29.json",
+      "forecast_rows": 96
+    },
+    {
+      "issue_time": "2026-02-19T19:00:00Z",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "rolling/forecast_20260219T190000Z_v1_aa88a2e7e61d.json",
+      "forecast_rows": 96
+    },
+    {
+      "issue_time": "2026-02-20T19:00:00Z",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "rolling/forecast_20260220T190000Z_v1_caf2b83e479d.json",
+      "forecast_rows": 96
+    },
+    {
+      "issue_time": "2026-02-21T19:00:00Z",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "rolling/forecast_20260221T190000Z_v1_79bfd1298bcd.json",
+      "forecast_rows": 96
+    },
+    {
+      "issue_time": "2026-02-22T19:00:00Z",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "rolling/forecast_20260222T190000Z_v1_f8f3a7928bc5.json",
+      "forecast_rows": 96
+    },
+    {
+      "issue_time": "2026-02-23T19:00:00Z",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "rolling/forecast_20260223T190000Z_v1_51e08b25e883.json",
+      "forecast_rows": 96
+    },
+    {
+      "issue_time": "2026-02-24T19:00:00Z",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "rolling/forecast_20260224T190000Z_v1_d816133dccce.json",
+      "forecast_rows": 96
+    },
+    {
+      "issue_time": "2026-02-25T19:00:00Z",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "rolling/forecast_20260225T190000Z_v1_adefe1f6a149.json",
+      "forecast_rows": 96
+    },
+    {
+      "issue_time": "2026-02-26T19:00:00Z",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "rolling/forecast_20260226T190000Z_v1_14d23bab5173.json",
+      "forecast_rows": 96
+    },
+    {
+      "issue_time": "2026-02-27T19:00:00Z",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "rolling/forecast_20260227T190000Z_v1_2b6e2b3e3813.json",
+      "forecast_rows": 96
+    }
+  ]
+}

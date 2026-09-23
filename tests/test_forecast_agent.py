@@ -26,6 +26,7 @@ class MockWeatherClient:
         self.extra_hours = extra_hours
         self.duplicate = duplicate
         self.fractional = fractional
+        self.fetch_time = FETCH
 
     def fetch_forecast(self, turbine_id, issue_time):
         self.calls.append((turbine_id, issue_time))
@@ -62,7 +63,7 @@ class MockWeatherClient:
             weather_run_time=run,
             provider="Open-Meteo",
             model="ecmwf_ifs",
-            fetch_time=FETCH,
+            fetch_time=self.fetch_time,
             input_hash=f"weather-{turbine_id}",
         )
         return ArchivedWeatherForecast(metadata, tuple(rows), {"fixture": True})
@@ -199,6 +200,31 @@ class ForecastAgentTests(unittest.TestCase):
             self.assertEqual(first.to_json(), second.to_json())
             self.assertEqual(first.output_path, second.output_path)
             self.assertEqual(len(list(Path(temporary).glob("forecast_*.json"))), 1)
+
+    def test_retrieval_time_change_reuses_original_artifact_without_rewrite(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            weather = MockWeatherClient()
+            agent = ForecastAgent(weather_client=weather, models={"turbine_1": MockPredictor(), "turbine_2": MockPredictor()}, output_dir=temporary)
+            first = agent.run(ISSUE)
+            original = first.output_path.read_bytes()
+            weather.fetch_time += timedelta(hours=1)
+            second = agent.run(ISSUE)
+            self.assertEqual(second.status, "COMPLETE", second.message)
+            self.assertEqual(second.to_json(), first.to_json())
+            self.assertEqual(second.output_path.read_bytes(), original)
+
+    def test_existing_forecast_artifact_is_never_overwritten(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            agent = ForecastAgent(weather_client=MockWeatherClient(), models={"turbine_1": MockPredictor(), "turbine_2": MockPredictor()}, output_dir=temporary)
+            first = agent.run(ISSUE)
+            path = first.output_path
+            saved = json.loads(path.read_text(encoding="utf-8"))
+            saved["forecast"][0]["prediction"] = 0.12345
+            path.write_text(json.dumps(saved), encoding="utf-8")
+            second = agent.run(ISSUE)
+            self.assertEqual(second.status, "FAILED")
+            self.assertIn("Refusing to overwrite", second.message)
+            self.assertEqual(json.loads(path.read_text(encoding="utf-8")), saved)
 
     def test_nonfinite_or_wrong_length_predictions_fail_without_saved_artifact(self):
         for values in ([float("nan")] * 48, [float("inf")] * 48, [True] * 48, [0.5]):

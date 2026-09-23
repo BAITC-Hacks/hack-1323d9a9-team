@@ -123,7 +123,7 @@ class WeatherForecastTrainingTests(unittest.TestCase):
             self.assertEqual(result["lead_time_hours"], [24, 48])
             self.assertEqual(result["training_date_range"]["rows"], 6)
             self.assertEqual(result["validation_period"]["rows"], 6)
-            self.assertEqual(result["available_at"], "2026-01-31T18:00:00+00:00")
+            self.assertEqual(result["available_at"], "2026-01-30T19:00:00+00:00")
             audit_path = artifact.parent / result["training_rows_audit"]["file"]
             self.assertEqual(result["training_rows_audit"]["sha256"], hashlib.sha256(audit_path.read_bytes()).hexdigest())
             with audit_path.open(encoding="utf-8", newline="") as stream:
@@ -157,10 +157,10 @@ class WeatherForecastTrainingTests(unittest.TestCase):
                 self.assertEqual((artifacts / f"{turbine}.joblib").read_bytes(), b"baseline sentinel")
                 self.assertEqual(report["selected_models"][turbine]["model_source"], "scada_weather_baseline_fallback")
 
-    def test_final_january_hour_is_reported_but_cannot_change_model_selection(self) -> None:
+    def test_january_31_targets_are_reported_but_cannot_change_model_selection(self) -> None:
         zone = ZoneInfo("Asia/Almaty")
         rows = {24: [], 48: []}
-        local_times = [datetime(2025, 12, 30, hour, tzinfo=zone) for hour in (0, 1)] + [datetime(2026, 1, 30, tzinfo=zone), datetime(2026, 1, 31, 23, tzinfo=zone)]
+        local_times = [datetime(2025, 12, 30, hour, tzinfo=zone) for hour in (0, 1)] + [datetime(2026, 1, 30, 23, tzinfo=zone), datetime(2026, 1, 31, tzinfo=zone)]
         for lead in rows:
             for index, local in enumerate(local_times):
                 valid = local.astimezone(UTC)

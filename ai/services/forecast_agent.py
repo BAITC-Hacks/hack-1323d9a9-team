@@ -110,6 +110,16 @@ def _model_key(model: Any, turbine_id: str) -> str:
     return f"{turbine_id}:{cls.__module__}.{cls.__qualname__}"
 
 
+def _artifact_identity(payload: dict[str, Any]) -> dict[str, Any]:
+    """Ignore only retrieval time and machine-local path when reusing a run."""
+    identity = json.loads(json.dumps(payload))
+    metadata = identity["metadata"]
+    metadata.pop("output_path", None)
+    for weather in metadata["weather"].values():
+        weather.pop("fetch_time", None)
+    return identity
+
+
 @dataclass(frozen=True)
 class ForecastPoint:
     turbine_id: str
@@ -422,6 +432,16 @@ class ForecastAgent:
             complete_states = (*states, "COMPLETE")
             metadata = self._metadata(issue, input_hash, weather, models, version, path, complete_states, horizon_hours)
             result = ForecastResult("COMPLETE", "Forecast completed", forecasts, metadata, path, complete_states)
+            if path.exists():
+                try:
+                    previous = json.loads(path.read_text(encoding="utf-8"))
+                except (OSError, ValueError) as exc:
+                    raise ForecastAgentError(f"Existing forecast artifact cannot be verified: {path}") from exc
+                if _artifact_identity(previous) != _artifact_identity(result.to_json()):
+                    raise ForecastAgentError(f"Refusing to overwrite a different forecast artifact: {path}")
+                # Preserve the original provenance (including its fetch time)
+                # without rewriting the artifact on repeated or relocated runs.
+                return ForecastResult("COMPLETE", result.message, forecasts, previous["metadata"], path, complete_states)
             self._write_artifact(path, result)
             return result
 

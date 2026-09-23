@@ -322,10 +322,10 @@ def train_archived_turbine(rows_by_lead: dict[int, list[ForecastTrainingRow]], a
         return None
     train_rows = sorted([row for training, _ in eligible.values() for row in training], key=lambda row: (row.valid_time, row.lead_time_hours))
     validation_rows = sorted([row for _, validation in eligible.values() for row in validation], key=lambda row: (row.valid_time, row.lead_time_hours))
-    # The first station-local February forecast is issued Jan 31 at 23:00.
-    # Its selection cannot use the Jan 31 23:00-24:00 power aggregate, which
-    # becomes known one hour later. Keep that last January hour reporting-only.
-    selection_available_at = (VALIDATION_END_EXCLUSIVE - timedelta(hours=1)).replace(tzinfo=ZoneInfo(scada_timezone)).astimezone(UTC)
+    # The first 24h-ahead February forecast is issued Jan 31 at 00:00 local.
+    # January targets ending after that instant may be reported as validation
+    # metrics, but must not influence the selected production model.
+    selection_available_at = (VALIDATION_END_EXCLUSIVE - timedelta(days=1)).replace(tzinfo=ZoneInfo(scada_timezone)).astimezone(UTC)
     selection_rows = [row for row in validation_rows if row.valid_time + timedelta(hours=1) <= selection_available_at]
     if len(selection_rows) < 2:
         return None
@@ -366,7 +366,7 @@ def train_archived_turbine(rows_by_lead: dict[int, list[ForecastTrainingRow]], a
         "candidate_parameters": {candidate_name: model.estimator.get_params(deep=False) for candidate_name, model in candidates.items()},
         "training_rows_audit": audit,
         "selected_model": name,
-        "selection_basis": "lowest clipped January MAE on identical pooled rows available by Jan31 23:00 station time; final January hour is reporting-only; January targets are never used for fitting",
+        "selection_basis": "lowest clipped January MAE on identical pooled rows available by Jan31 00:00 station time; later January targets are reporting-only; January targets are never used for fitting",
         "selection_validation_range": {"start": min(row.valid_time for row in selection_rows).isoformat(), "end": max(row.valid_time for row in selection_rows).isoformat(), "rows": len(selection_rows)},
         "selection_metrics": candidate_metrics[name]["selection_metrics"],
         "metrics": candidate_metrics[name]["metrics"],

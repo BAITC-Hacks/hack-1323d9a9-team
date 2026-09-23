@@ -2,9 +2,9 @@
   "archived_weather": {
     "turbine_1": {
       "cache_statistics": {
-        "cache_entries": 250,
+        "cache_entries": 277,
         "rejected_cache_entries": 0,
-        "rejected_rows": 16229,
+        "rejected_rows": 22709,
         "verified_cache_input_hashes": [
           "0326b731fdda58f903372afddeb3c1502b3dedaadf0d7939acc9cadd4d12a2af",
           "047d6217c3efa293576cd8bb13c227286f0cc70dec3e762db8894988e69875b0",
@@ -38,6 +38,7 @@
           "1fdb99706ff25bf4dfa669d2e7a63bdaf930f7ec4db55267744c9a2b4a12d3e8",
           "20201420782f301a29db3a4df7734cce42c7b5d80e6306275c2e2af112c89256",
           "20466084487b931d0975ad10ee5addd111c8bb0407381e5177c7a1ad9b54fb44",
+          "204d38177f0e469e351e546beeda599036324ac1e6d771c535fca1d92e0dc3ea",
           "20858f6f09b4c70c7652da6c893a54cdd8149a0c5c94809fbaf3bbab922c78b0",
           "20daa31b853645542104c6bfa0477e3879a76ec8c5fa6d88db9794bd5ff0624d",
           "2112a2ff90fc34c75b8672d2a80a1a6c00d631ebab478098caef1e2603d2da4d",
@@ -47,6 +48,7 @@
           "244a49864193de4bdc8096edaf6a5714bf195a3c3f760fcfda6fd1fd0338247b",
           "25fafd4055ca3dc1ebd69157a20b31099584a864a2e83cf2b2f52bd23a33cdc6",
           "26057a3313430c8d30cd0af808dd6cfa22b591f44f750017310dd629bd9e3ed3",
+          "277a46f1e93208a24836cf0a84c361854fb80efb8b58f1115136be31b1b59218",
           "27afb6c0a385bc285a62110318e7f48363300e07d91b5e589df72e8cd953a32b",
           "27b7678b5c9b112e56a9d0f164bb7ca1dbe820ac8c7edca468421ee943e399a1",
           "2824e54287f5cbe88ad16d7f3f82feaa4cb6ef6f476eb887b18082c941627e95",
@@ -55,6 +57,7 @@
           "2c1a9ec3b7fa9580eef0cfef8a2df735a57d2034af8ba4643d38f5ff96e0d389",
           "2c2cc43abee0394c74f134a89ca61c7e2ec7e473509f5b7bdbec75f2f50a3945",
           "2c4c3bc50e84726353036bbe62db08659f569fe278266fb4de6335b3d5762af4",
+          "2d6d04aa45cdb7c3667f534471039265fa688a24f2f4ea7071175db09805cf87",
           "2e6c98f751b6abb114392718e6450a69d4143c8dfe26fedf83ca49844b0a14f9",
           "2f76bd1294477c4d9215fce6d33efb348b5bf9d11b1263319abc24e0558e1b08",
           "30849935a920e37c6f67a5cac86feefb2cfbb34a0e040ed720047084e0e31b84",
@@ -71,9 +74,12 @@
           "39e5ecac747749f27dd86d63ba0b0a70c07b8036f90570d0df89959ad1cf9457",
           "3a93e666d721cf54ee79ed778f79da72e1e9096235380dd6a89ab72387848e00",
           "3ab9f14df5704c991bd79d1cec39bfda09e2758e54b6dcb6ebdfa604639d08fc",
+          "3b16dc0d1a3e3be42bde005ed40296ab3d512065c1b05514de106224e8225781",
+          "3b511072bca3a850b63179daa73c2c43647d014b16d17718344c77cb01b0e6e5",
           "3bb9e152016e04ecda400495a8a5364a77f6eccc3ad1e18b17c1d2abd7ac7f2b",
           "3c15b97bda7ff573bd03b3ca745ca661e5cd64715d0ef8e8c4a282412a98dd11",
           "3c2dbed24a2df294b7978d108355042f82b57c9590d8313077fbe8ccb9091d45",
+          "3c6a8882ac3df9a6a8e0399d4b5ebcf80ad2963cd3030f7841708c8f610b69db",
           "3e1fe589e7da7244ff28f23270c586687ea5511aba278aa64ab22d6fba964513",
           "3e20ca1b0010b73f8ea589ffeb13bf157cb3fb90ee843b9fe64a8b5e01ea0bba",
           "3f1b3fb5db272527c39b498a6c7c81a049ba984a1ffd2678a4cbb329e45ae3bb",
@@ -87,10 +93,12 @@
           "42a1a6d942cb580052c39b2ab121152da91189ae0ea75348b94b4adc8b968dba",
           "4342d079c83f9416b81d3bfede815d3faeccbb9ee61a641c51a8d6b14b28f6a4",
           "4355730a629a08099b9bad34e92f24bde6c1b2f4a0bb9d38e6dd75aadfa50e56",
+          "435b217599b62f7cd6d9bbc7e68f57425976aee58b2225de82c6ede8a36ab2d4",
           "45054f6943270f7076a6b07e6f7d594900fdf7d4cdf5fbc8066a15f3ea95d5b9",
           "45e0e5d15798f6b4579b830d59c1838fb59b7be4b2315b25c46b8b4805dfbf4f",
           "471a80558d1221965f8c90a3ae7c9f4ded92072c61a29c48268ec3fa6431dc41",
           "47377fab7d9a54224fe14d2fd0ea6af7134138d85d08a8dfebc8e83fa7f50ed4",
+          "47a1e0f0b381591cb0aa49e715b42c18722c5ef945e6e8174e849de51a0bbe20",
           "495f6a1556e71b2755056738c0f13953fb409d2212dcbb85156277cf40b6d7f6",
           "4c2806db7ae79ed702d54e55a750cddb561acb0f321dad610ac423054b4da5ab",
           "4cce734d8d9fcc6e7776a5550576626cbe8ce00558a173c016693de8492e0c94",
@@ -107,8 +115,11 @@
           "5853894399677f7260d67cb2aac5e391752935e3801d4c7ed5f16f1fe7155f90",
           "585890945fe4681cb8c392eaaa9eac6db179f3e64b3f756bf8b3ef656ceff345",
           "5a5849590825fa852b9e113f70ec7631c96387c1af204d91f8d8147980ae23ac",
+          "5a8e185107902b562ba1cf9ab471f31763d25263b9ad4e684769a977b7dd26fd",
+          "5ccd59be0b80bdea5eb48f4d27889f4fc98b2db83e097a4c4346ffb90fda0245",
           "5de74d7ee152f4ded109ef5790c1841ae5ed57ed8c6705bb055744e2dfa8ecb4",
           "5e2a6f32b34805631a4c5305d94164936f3d792508b490b7d546a2a9d2b650f1",
+          "5e3a43380a6dfe8384a3d3df7b84d269e9866251778bc6da705cd85d1dc47f64",
           "5ef5643a4404c7fbcb19239018f2292d65391b0fd32e8d9aad1dc8d27ec4c532",
           "6105e60372a3272fac963eeca00314b2e956f6c3306f6641c88279f40be9156e",
           "61a8d121d030e23f381a46199861026b0df5683567c696ca94f1416c97bf3fd2",
@@ -131,11 +142,14 @@
           "7223c38693677c453fe8d18dcebb60a9e159d82c3e744876118e34f41f211f09",
           "744cb90bf90ccc8333879714c3b726a8bfe42d1ed93eb402ccd842a1e56acdef",
           "75f52c20571c027b16784b86de26a04e8e6e1079df0905c8825a47660afa56fb",
+          "7630322bc80364d86a57a25914f0be481b877e9dab60e8b248a8333703ce1bd1",
+          "76f310a9f68cb6dc55d3f4ac2eac056e8e68735e849d1373adda439e85be4aee",
           "7721f95432e3b513042a1c94aafdb899be8a43ebe57e5653efff54f108996659",
           "79748bf70d11487485b479c0bdbe3ceac35895600c7972e0e231e7f2a636424e",
           "798da38864214241f99a8b60b41a00cb6bb7cbe6f6894726c6af7ef4afd92dfb",
           "7bffd8a2e6acbd47b77eb9c042fa04d88644c78fd428a2677993b2a95a5b1e32",
           "7cba57d35245ede65911abc2153a06695c1a7b506ff5e182d8afc3783a169f1d",
+          "7dbc2e592ce3a8da6d5d451ded2ad91c94a2f07142b02fb1e4e0aea7ff2a6cb3",
           "7e271f1a148960bc9ecff67423c7519667e20eae76a0d9bb45a093ec7b79b98c",
           "7f81f1153e19afa79052e241a661fe8aa169e059409f9f740592bc9ab39b7040",
           "806e57d4ddd26c72480c994fa02647667439d0ecc75221adc98ef4ea9040d665",
@@ -152,12 +166,14 @@
           "8701f89ee8bcd01b065b33eea1f963c67c9d930d658ee3848d76ca9ce0d315c6",
           "88b17826b93f1b82f250ec9492d2c57b16e94a22edcc49380c9f0e55be69f713",
           "89fe5847d938f468c2ccb2d867be758210bf7eb3bba115ea595e81ebcfc5919d",
+          "8ce887da169fde47a9fa553200f8639c541ec05d5337ec46f63ba472035fd932",
           "8e082d4ce393cb58dbd0ade79d88c4d349051eb278bcdc8abc58a084416ccd2c",
           "90638a3262e0e05fb0ccc9d64d5abf7c4f7911e80222604bbd43379f862a57e5",
           "90fd14dde84da52cb4f1a1b5a5829a0292f3222d7d9dc7761e6e19f842834257",
           "9193380d26f1df2b897a5fa6e2b49436f6ee73aac9f5b9477b87c405a5525f19",
           "91b73b252f451ad8d9e2dcc6075ddc4f67d3ab9fec44e4d294a4cdf90f509c84",
           "952c8404833582bb48736931c1c515df295369b0af3406cb2ab8475b7744d0db",
+          "98d92449b76a898181e81a044e38ffd227bda33be32516b26c6f1dd2cccf6c46",
           "9d2fac95bcd59092d9ae0c1d1711812594fa4f87f91858d5ba8e17ab0bd1fee5",
           "9ebd75239292faea01d0ca9dfb1744ce2798d8576212243d1c75c7b51ac41339",
           "9f8149b90c98becd0793a8f133367342c7a9c859472c50917a14e0b57eaec0a1",
@@ -180,6 +196,7 @@
           "b089b24ea18bfce85ee43e2a660b101e5e1883b7c5e32c493f1bbf519c52d627",
           "b186b4526e71fbb79c06149c32c4300018b3e1e2eb334ed37313b260455f3e2c",
           "b488f7e6b26d9e12252916a85b978d567770d7f13e7a0af7a5a56c6df31ea742",
+          "b650ebdf15809bc7ca2057df12c25d8f5580a95bc97abc91980468e94b7672b6",
           "b6f4f1a895934fc59bf8a81007f6adf5e924a6def25592e59e924c487f28f8ca",
           "b8275362ce52e1f94fd656fce44497ba799bb6d9b9c038ef166ee75cd0385674",
           "b850f3291a7f0508a5093f24b2baec7982abb9a68e17a9de6221bdaaabc9c777",
@@ -188,6 +205,8 @@
           "b9f025010d594c919411f584ef9148866d3bf15b660f2e942a5c99d3c087fcb9",
           "ba1e2224f2f7ba486c07e6e614114313a2e5827b6a3d412dd3a33d9b54f77e17",
           "bab38012272259cf2de9bd239b19b8db96ee037bc1a160072a0121cf299259d1",
+          "bb170e224100ec4d35a4d099224b854d41f251d7140f1c30801fc0857cf70b43",
+          "bb60c589e6bab3c488f8040378106858bcf63ad904e550822a0d60d39bedcfa7",
           "bbb04529949d48178b0fa783c807b7ef1a83bebe4bb8998e02ccc913ede85f00",
           "bbc23c97a2623e3f95fca3749955b6b85eed87ad380794a5e3d99cc1e1169d2c",
           "bc461398b4c07c4c6614915aa2cb5baa60d48ef5c58d9f1cd1ce597a8e7139dd",
@@ -201,6 +220,7 @@
           "bf832ac2748d4eacf73257506bb8b3fcd4226bd542c587bcd5d9dd530f9dc68c",
           "c0023a5c9a39a136b872f9907dc5abbc93fa9051b1dec7348bbd38a1cb4bfa70",
           "c092096077677e0116461ac764a0bd74a7068a5d3ec517816b6524e5f0132e46",
+          "c0f587fb9f4137d144ab5ce8ee6ba7035cc4c8917637cf3902a5716db29b89a3",
           "c20b8d6dafd40780b6ac9656c46db328ebc159ef2c5cb64b72ac7888b1a87348",
           "c5a2821e6fe23daba6de119a6e150d5a28ac2fbf0202f6e6289b607d35510be9",
           "c6ed47fb67fc822413ca12e28895ffbd592978db44f1b9f4ce31b2dcf03eb4a6",
@@ -211,6 +231,7 @@
           "cdfb5213b25da607bca1d334786166f6bf388938448737edd4ae9784149c2877",
           "ce1a4060bbee6e70d58e473881fa96879ea955faaebc9e83a82302e55903c919",
           "cf47a00c793153f9d43da8c404418ebbf8e4389dfa3e3507e3fba1da338edcd1",
+          "cfc4b61f8cc47c7daf46e75212b4b6685500f54dc1b7c98b5cab1ca6a2d4abea",
           "d15d885469d65114ed7feddddde4cd524d9594b76ab1a868b5b83907a59a0339",
           "d431e3d11bc563b84220f0db4e02d014ffd3623311abc6cb6a585b7322ba41df",
           "d579b5b429fff90cff75bcef39406443dbc59a25b0729711b9dc8897b8913860",
@@ -218,7 +239,10 @@
           "d84c2a3c4c84a8f6057c41569be0fbfacd13374d16530b469aa284d7e83196fb",
           "d8de31bd75acce13a7ce392114608c868f6592f20c4c68eab87c57e417c18deb",
           "d9058207de2f2c246f150958afbd294f82de43144c4b93e3444b72d3216c6024",
+          "d90de849bfb4616e47ea06577625e4cf6f5af6cb41a186b37e0ca7e22409f0a8",
+          "d98d7a79aa9a507f9d799596c71edab6cf40bb2c1961513228cb2349d1b1c266",
           "d9df97d3fa3d3ff7f4ef4f6f3b0500d9eff17c88d984f2943840b43ca52299e1",
+          "d9f11a72fd2d539a13cbee764815ee368a8c3541cf7a036e24e83b478c721d12",
           "da5b917f7cb82d732167c01b3280c8ac67b8d6ac55285ddc0e3ac08f580ec328",
           "dbed248c9fefc196d076a948db98b848dd60184dfa34b440b3ef34f23c7762a4",
           "dcc580fe1723d84bbfdd057de64aefb328229a74de53f1963a407f3893b5bc6d",
@@ -229,6 +253,7 @@
           "e46ba3177bddfeab3218118b2764c189dcea6b1f3defc040081a32ef02e8fe5f",
           "e48b67d0ef1757bfccc511dd2e7f38c17297802b74872962b745611ec9f213de",
           "e48eef06417f14cdbf33e74cad86cfe6be82f0412c80834011003af48b89622b",
+          "e4fee6e85c5d08989880d6891e59aa49c332ec70b224ee0dd01bbbbb01a5a303",
           "e575a00639c64503102f3bbcbe09fca644f3ece7e598ec2e21fd0686dcd40314",
           "e5b9966d0b56be24ccd510efe7c224f3db2275f5009ce88f4f017616014865ed",
           "e73e4779bacea97cf50867edb30178717f6c729d45e6ea741b0c4f4dd786412e",
@@ -246,8 +271,10 @@
           "f47b54826d474b47b5e13b30aff8f44d325b6213356b43f389fabe2af6c2e6d5",
           "f53f6c847b8d2a9f19f9b3bb28624be9a36b3ee46aa295a2a211a86c727bb7ec",
           "f5fec8c0af70641253ebaf5fd4a22f826a200661864e434c17b832acfc17e38d",
+          "f69eb5aff2902ed953e685668169d73b8ac47a07e4455b251ffb5e888302b2fa",
           "f7166a1235675f1ca3b676cee03220804bcc050943c3aad2e75a6cbd67e47648",
           "f828b228f9812d59f251502df39be609049549980e0db469bbd62118f52518b8",
+          "f86f5ec109b9ad0e42201df59b3358cc5b4e3e074ed8556325a8ad66e5f6a7e1",
           "f95f92f22c03dac6befaaa3d7f9de8d4330094ea4a8ffb23a1b520c30b22c246",
           "f9676ffa6b85294d666170010dad740c11da3c8dc50ea71b3509ab15d7dd89e8",
           "f9f9c55eb57e9a38abe1e677915ec6f789cb7b8b6a1ab48b27bfad534ad37a83",
@@ -270,7 +297,7 @@
       },
       "result": {
         "artifact": "turbine_1_archived.joblib",
-        "available_at": "2026-01-31T18:00:00+00:00",
+        "available_at": "2026-01-30T19:00:00+00:00",
         "candidate_metrics": {
           "extra_trees": {
             "metrics": {
@@ -279,9 +306,9 @@
               "rmse": 0.2847259745957368
             },
             "selection_metrics": {
-              "mae": 0.23762962958095,
-              "r2": 0.2873699068249379,
-              "rmse": 0.2849106986391459
+              "mae": 0.235774520158179,
+              "r2": 0.2852337768730414,
+              "rmse": 0.28333883065630094
             },
             "validation_by_lead": {
               "24": {
@@ -309,9 +336,9 @@
               "rmse": 0.2748416126898035
             },
             "selection_metrics": {
-              "mae": 0.19834380137353427,
-              "r2": 0.33608965248652556,
-              "rmse": 0.27499917911986016
+              "mae": 0.19532370079820183,
+              "r2": 0.3352504944075262,
+              "rmse": 0.27324555010255214
             },
             "validation_by_lead": {
               "24": {
@@ -414,15 +441,15 @@
         "model_source": "archived_open_meteo_single_runs",
         "random_seed": 42,
         "selected_model": "hist_gradient_boosting",
-        "selection_basis": "lowest clipped January MAE on identical pooled rows available by Jan31 23:00 station time; final January hour is reporting-only; January targets are never used for fitting",
+        "selection_basis": "lowest clipped January MAE on identical pooled rows available by Jan31 00:00 station time; later January targets are reporting-only; January targets are never used for fitting",
         "selection_metrics": {
-          "mae": 0.19834380137353427,
-          "r2": 0.33608965248652556,
-          "rmse": 0.27499917911986016
+          "mae": 0.19532370079820183,
+          "r2": 0.3352504944075262,
+          "rmse": 0.27324555010255214
         },
         "selection_validation_range": {
-          "end": "2026-01-31T17:00:00+00:00",
-          "rows": 1486,
+          "end": "2026-01-30T18:00:00+00:00",
+          "rows": 1440,
           "start": "2025-12-31T19:00:00+00:00"
         },
         "software_versions": {
@@ -440,7 +467,7 @@
         "training_rows_audit": {
           "file": "turbine_1_archived_training_rows.csv",
           "rows": 2960,
-          "sha256": "dc816ba79bc798c6a768a08f137894ae8da079d642d7e533c6070d8187bfdc8f",
+          "sha256": "fbe8587d229311c319871286d050ecf9f1eb258cfe9c16b4878a3ea2ad50ed62",
           "used_weather_cache_input_hashes": [
             "0326b731fdda58f903372afddeb3c1502b3dedaadf0d7939acc9cadd4d12a2af",
             "047d6217c3efa293576cd8bb13c227286f0cc70dec3e762db8894988e69875b0",
@@ -707,9 +734,9 @@
     },
     "turbine_2": {
       "cache_statistics": {
-        "cache_entries": 249,
+        "cache_entries": 277,
         "rejected_cache_entries": 0,
-        "rejected_rows": 16113,
+        "rejected_rows": 22833,
         "verified_cache_input_hashes": [
           "0099499e1ab9a719b07738a4fdb9ca3fbdaf72bfd97e14630e00cc8ba9625d4f",
           "00e6ea5aa0fe8c86a35cda6d989c456129d4bee34c4a79719f1972a498cf0eea",
@@ -719,6 +746,7 @@
           "0267d80e442c6010815a4248d87e3ad352fc447644e738f7ab886628cbe3e23d",
           "0373dbe186a1438e8323ede51e04a7780745e91480e063f0f6dbb96d88694e9e",
           "049c08571cc8950cf514e31dd22fa76fd5d9b2c38a6c5a4199713d1854f32754",
+          "055aaf8c06ca2b642dfac05a06f1a1421c802ea9933b63d48fa6e80338de9a78",
           "0605597c23e6afe836d78b416cb1cb1a35ed96721fae7d4426db0f2b7a884074",
           "09b9bffa46cc668080e3eb007f580136e5fde91d774d008e90fd172d59bc560b",
           "0ab7b47377c78de9870e58a775ebcff23a3c6522fa30109fb62e2181eb52fcd5",
@@ -753,13 +781,16 @@
           "26d6eaefa2412ac5467cb0550db3cbd05f308ede3f00eae3f00941acca760d94",
           "276297b18c08282b4c865641c8dded84db60d5ec0779bcd0069fb154e8538a62",
           "27ed0f154bd9af2779d191cc827f735b5790d19312b611308c6dfc3361b5af3a",
+          "284386c01062da5f345df84d4dd4db75614fec2b40e8202656d03860cc99f7a6",
           "2a1057edb7b00ea830af2e607680efc7181b0966eb8fa3a71e62131d702cbd13",
           "2b484f647062d6ff283fa6d68e72258fefbb337c16e2ece0d3a723d5e31d8f60",
+          "2bc159e01fbb76944ac1198f760c25ad8a3faff499032dfb17c1b7b9da34f3e2",
           "2c2c8cbb884c7223578c3df2e77e5675ec3ac539cfbc589cdf3b2b2884c7cc88",
           "2ca287de7fe297f628f576716d7e0bc157f2c2546c875e5ae05665385ed2c093",
           "2ce05d3850379bab52e285f6d546ce8889c1d2d79e0387b63565d7f58377a4bf",
           "2d0621738aa8db8618a70215b3e16f8f4d1ef32f2a2f82ce8890e4a9bef5689c",
           "2d9f5d28b9ecaffe68de8a6e7c6591ab086e5f313227ca593b72c7561072f5ae",
+          "2df19c160814412dfdbfa3c9619f2140628607e4d5263c034ccd9fc50f234c80",
           "2f27b276126e175a22e72b02e864d113ef60f0d08bb0cbe68ae0189076be753d",
           "2f336223c2761251ac3aa3b903f9c99611b51c2e1a7836922e54b270390dffbb",
           "2ffe15b757b68ef24593c79732135dff0f927614f6b8c14c36bc1ef3565d5d3e",
@@ -801,17 +832,21 @@
           "4edaed7d106aea26554632d54737d0e68a6e92468f619bbcd9165fc3270016ce",
           "4fa761219848ea64fba144751f8321ca751c58689044e0c2ef040a1351c0d2da",
           "5068bb337fd06dcf820a25be63c9873c2348b44a7af4caa2a12f0ee9589da482",
+          "50ff2c621b19f62faf7816c0393e7dba0c824bdaeb1c33d12b4308d36d3890a7",
           "53180a27e96eee223107f5f32159ba2a4b705d9982a58ca2c5c91c390c0a0b44",
           "538979141d74ae63f80f68efca04e45ce0dd5a37c11fc3fb59b95a9a7fcadb1a",
           "54ce044ba44f6f4d16e9cfe66a988753671083b7319b04c417b16ad26a7a2c26",
           "5575c27338edb8a8de35165045b00e0618213125ffe0f7b35d5d45e5ee83d1b5",
           "578542b1198a9a9ef3e2321cf0c4e806edd54ac4a2ba09cd345cf6ef51606cdd",
+          "579ee98ea558e89b67d456e76fb43b01a347766cdee65b1891d08d11c3f3aec2",
           "57abcf45a84f23188541e700b19177e4b63905dfb42eb986c7947137b877cfd5",
           "58128e5ce0eef8e8927fe46ef1565374741a676a629162a4c58facaa79ce6a1d",
           "585331a2c9b4c51ac8817312fc7d2f39eaad76e679ea6e4228151f3a2496c113",
           "58f82b06aecb416c740ef2ba1c0095599998fb13f80361e4e4da09d6a4e6866a",
+          "5937d32883e1c3c1cefc385f86698793fee5e54de87dcddb2f38a0294d9d2f2d",
           "59cc3d5628e76466a100e48c2bf0103db1873fa510a5f3c23539b5ea843abdb3",
           "5a639a7198a3d9f04e6a104d8e122f03fd8e3edf79f3d4459ed787d5720ea519",
+          "5a7afaa9de669f2f34b2483156ba17e7be86949ed4756f08c10f8cbb53566fb3",
           "5a91c28ac486382f0c69f3ff13781c2c8df7485c7acd6204d4b6c39cbb74aa4d",
           "5bc00a4b2e70d800ed7212f51737c87ecac42619f5141e38c191e63da4af1b0e",
           "5c21ff85b5cd7b6f12faa6470fe37bea085906d0accf6a6c9d77a43743185bc5",
@@ -830,6 +865,7 @@
           "68a7e5b05d623143cd3c1b18ca1464a417597a9d248376ff0224b6e3595cd1f5",
           "68bfd285e324007d801d6e28c8a505100a3d9d3f6f566260aa0e1830f0af755a",
           "6a049c91b9f7b0c5f37ae3a73e360351a8eb824d217ed0d29f9d7774170338e7",
+          "6ab348d3e4ef1abb72a168989f742c67d3cf7ab59fb25e3a0d8d6a9bea1bb342",
           "6b2e43a86b46e0f83e85d4a6c76a004286a340e1bd7b014e8021aa879b165c63",
           "6c53512d74d0fcb7906ce9b638802abf9448b554707488013e4a3582d66b9b63",
           "6c74a7565a77a2fcc988b276a4c7f66907865e03c4c30bfe0c14b572989c26c9",
@@ -840,6 +876,7 @@
           "746855c51e07ad037fe077621b88abcb35d5fe11682c136c2a5c64fbc3374a20",
           "7533dd053dc0d3c4e0a92d49e38e6b0798f8d92db7dd07746e35bf87939ec334",
           "75a5714f8b7e2bbe0d45fe9a857a4ec913f93b6b9a558381f4476e0de3634b16",
+          "782e59163497f5cb2dd31d894fc7d814ddcae345a17a4b07e4fb0f8ee4d5d1ae",
           "78e64501606c9e144e9eb6803ae326d27ab98053e40870cdc0f5a7267d765a67",
           "78f78c5e228ccc508e5bf4ece88045f3339c6da416f5b52f72085d942a31a86e",
           "79ab439402942c1fb9e3e24fbfbd9a7525b95f393673765ebc9c4c963e6e1f0b",
@@ -858,12 +895,14 @@
           "83ed896eb4aabb71d5c4f1861172b4972a76edf70b9a912b7937dccb2859852e",
           "841ea4376654f10f641f1346c3ff0e15df6d99b202d69ef97ce38fad56005f30",
           "84d4f046e785facd1e777985ec37b01ee316c92be24e34340e77221f0d8f1e5c",
+          "864720e5bef64a8d24a357a04135caa645142d1db41abc84de2055bd1fcb3a32",
           "8713563c1e4a9e1a7a2af51f426017cd2959f1407861021ef2f1f8b4a4398d0d",
           "8c7b2088bb1556a66b4abdd0469dc9b4959b566b73b2f4fcc30735afcbb1a5f4",
           "8e59543c142060d4e0995a1a2ff7ba6913a9a519c656ae6d83851c10be8013ee",
           "905a851861b2b2da12ea839454000cbd466f99e59bb37c3567e99db48b989cdd",
           "91f30afe3d3dddc8f715b81927051bc128726d671623e4ba70a1a38122d98120",
           "9277164960a8b31953dfd39c7a82c340e70fe164bb348c82dde5b612b80820e0",
+          "929ef2e8ef4e257c617917374352e46209e3a83b9f94c5f950686edc69b9b098",
           "92da1ac54da50990f6402f26e341ee2284d51d9484bf1878078d0451361dacb0",
           "937910c2d5194fa517dfbe09c3189ca9025fe6fb5c5224571e3abfe66333df0d",
           "9387a80e1f1580c9391428ba21a106bc1158d9c2cc2291e3c6e50fb7b661612a",
@@ -873,22 +912,30 @@
           "962b8fd0c0e857e8496a756b9f8f89af3e4935e7e0343236d6ec83246bfbab5e",
           "968d5ae654f1f86c561e7e9b48cfda33c7ecb814d51f67570cbef49a78a8e591",
           "96d578afb34ea328ce833a839a270bb9ab2af3bb349bd73a224efb635cf92103",
+          "9b494a54be843534b11851cd9a8fcb3519e5a5434822b7000ab3a67d1d111541",
+          "9bffe8f885c7c675ea3bad5e53ff39d807eded82187490a7fe20a45365d89784",
+          "9dd85c4fc90caabeaa80b71a1e04418670a6aef1d108a66e2f22a62c3eb7c6d2",
           "9f083b80d23f5846545b916266b6bd77b3a403c6d935782902217498004d3b82",
           "a291134b9a7bde13d40e97c3a2cdfc1da248c83933196b1dd42ceefd6fe4215d",
           "a307a71558868a5ffd06aca8b8d1e21d44105567fc46d715386c6e877818a9de",
           "a61546e39b5d7cd779c0884f2ecf235387d830ae9e57676f1aa1f278e0522593",
+          "a75ed88dfbe4b1ace4f895421bfc9ae529aff1e09c6a780d7c8f57fd76eb454c",
           "ae20e05445bbbb0702cfff5560f4fc18ffc89986a3c3d2fa17b03be66dbf6808",
+          "afd52077cfc933570e173aa19b63e814ba497b626bc46f227a2608498f8b1071",
           "b04a2d189091c80fe4b13f8c22f10b7de8091bf8f1a9b1346b85c9122c690dbe",
           "b0fcd629310c7c7cb98129c877c6f5edf135bd70345b40561bf993a4300f0544",
+          "b199c19743002bbf1f5f747e08c402a9ef6f212cf49a76a33c906331ea61bcab",
           "b218f6d5d0110a319772ba25e7e9fd7097881f6ad5f23cc2d8527e9c93f093d6",
           "b308908b3a4de0e7712b8f94cb28f56d635391775bbb4a306ab6cf987528febd",
           "b330c4ef08093f2c84d3ac4d3c42ad46c85a8758a2ae4e255fad47b84707eced",
+          "b3abc5c3a1120e89ae5f556e2c14169b5cf6b98b570dbfa2040809974cf34579",
           "b4160ed07d05e5bd4b2367e7c27cdba8d1a4b657433071e750a0957aa07ccd22",
           "b4207b6610379d5c152d764c9b58ad9f369ede61cdb2ab97974f953d57f55a89",
           "b6fb41c2290b9ff78ec0923180be13367e6d910ca8c19ad4d6ae1e87e2d7ecc7",
           "ba8e276cdfdd759d791985519a1f31f2f82d70bcd4a1c03128c4927044c68c99",
           "bb00284bbe6cb398a90aa4e35cb2e36d0d524f2c8a8e36edceac710b2aba6b55",
           "bb5a0c038b5fb8affc6672330326a11f61656e45a2c4b5016479f474852eaca0",
+          "bb5d1328c9ca8332332908022fb792e6b6d2122a1144236c2a1535cc91828042",
           "bb993402f42362af285ad90d6f04c26f0d0c45c358ebae2c98f85d89f49cd6d2",
           "be1bb5524040690fe6a7fae1f6260ea20040831ea97ac0753b6d79c0cb25a45e",
           "bea1b380c572ad6d0c324222cf33ef083c27bb8f70045b1f5d38e8b59f002a1f",
@@ -900,6 +947,7 @@
           "c3dc3adad84464a1f1c5717ca63a9d29b375f08604712fd655fd2318030668b5",
           "c65dbe688bc6875e7706733005003c1bf6e2128374ac1c084d0fa9a0d72e11b9",
           "c72e0583ccd20aff1bdc81ce805a8f7234019a9e404207a6c868ee6ea4b77dad",
+          "c7a0de6112b173e2524cd44bd9a3d4bdb569693ffb7e0c0da9a6f0c944e145be",
           "c7cd6ecff67a49ff3d7f51dd61a82daa0afd7ec32daa6015755bef43ba78e284",
           "c905211f85144cd0875236ad85048725d5ba0bbf0bcf8f99a5e98b4d7497c700",
           "c9843a88275e3752939fa01a203987e8e718ae5e4a9ea3aaeb8a50ed15e8c919",
@@ -915,6 +963,8 @@
           "d289c5fbdbcfbf7be0df3f28aa1ec69433d0b72ff571e8c13b6c82814a027c5b",
           "d2c321a1ca6f03ae52c49ebc55604c851bc4912e76f0d670f1df5ff67848bca7",
           "d348749a84d327358a7e7380617cb581cea423889f9f17464b8e82902444100b",
+          "d4f738111c49a66720e5b2bba9f876bba5fbbdbee471b6f9583792d49d13fecf",
+          "d5c606b01348210bcca604bbdea6bd3fb2a73b663490aa3ffb4e115945260718",
           "d64af6bd884fe8ec9341e340e3d0f906e781a5c064f6e0e6260f4624cac9ea5b",
           "d6b5ea905f0a638a8cab8ba7f67c36240703986b6780724af35c567d4abbd2a0",
           "d7823a8a76ac748876f50ec54156c80cdb018c105094606b5a8f17b058f94e00",
@@ -932,8 +982,10 @@
           "e3a3df52a94e4a2b3e58eb3b7984ddbf829346cfafe56b25bbcc0b8f8ee68810",
           "e5395ac7032ac8df7d399d11249286c8232f1462cfccf1504f6c1faf3c9ea027",
           "e89004d75a3a0db1825311c9ac65bab020bc14c3855487d80f95085c0910a65b",
+          "e92cbf04e971f012f287a380ad04dd824ac25181ba0e8da1ae62412245355ccc",
           "e9ceb10ab6b82fe8526edc83df996ce6d88cc10243d5963b739dc3012d290bcc",
           "ea112ffe3bccb19d93458c0b0f9b616c8d00bd0b98910493155567ddf4f6050e",
+          "eb561b9e5b2a0854439786aa7e74d05cc7ab3bc349baa88367de72256dd27925",
           "ebd38870dc8369bd809c923cc495bfbf823715b23caf130616bc7c24c420dec7",
           "ec240d623defe5d0a90c76b4dc7781159ab9a481cd61d300639cabee54953084",
           "ecac2f7fb7f368d7ab777f8f3a62cc21338c6414a21fc450803d5809bbb29234",
@@ -942,6 +994,7 @@
           "ef55df16e6d4795bdb49711fc943f1449c0b72c5ff6853ea6386a7e0cd4a417d",
           "f1926302c17d9707ba777b24d3a84aac4cb0b15347693ed3b45f40228cb4b0c8",
           "f3635f885e46a5dbf907aed19d27ea173a5e7b82868c510c401d8561ab6ce377",
+          "f3f5e49a0d56c031b920fe80f714fbf8968ae5b0e718f28008707c67b941a247",
           "f40924a10aedbfb252c91a32db90cf45c9ddf3ffaf34394b7c820b2f7d42c9a6",
           "f46c33979387ceeede334481b75161e020d0a468fe445e83b1f86fabe01969d1",
           "f4a95870dd04c2d5476dee70832a88f14d824bda1ecca2d77cc14af53fe7eda5",
@@ -953,11 +1006,13 @@
           "f832da379f865a433fdabcbbf2d02951235dc95951a08a645a58c574999a6b56",
           "f835f4cf7370bfffb071ea7014992784e501aba5e24e5260af98d40ed83bb943",
           "f916ceed063c7e0f5d0bb0abfbfb4ee48cdc60cb38c0dc154ab223dd53148162",
+          "fa0c32a938f7e434936c6f5df440f9bb24ff741d8748a756d844833b902c75a1",
           "fb28684c5ca21f634c86ad8f511aa1f683dc2d8e58d232d6228b577364717419",
           "fbaa9a2f46b7fc61d233b51638c3463f9d4a3817dcb1cd84d9d8a74c21e4552d",
           "fbe1c15f6a251623e45f7242e7816122757036784efcc936427f0531f08956fc",
           "fdbbf1a56c014d05a9c2adaa824b2be1ba4523f1afe7cc817fbbd6d2ab083b32",
           "fe5ed9aafe8e658c68df9c8b7ebad3dd5599dfb163c017698f1487b2e57cc186",
+          "ff55bc1ceb76841bc614f8f557407fdb053d07e0d71a3c279361c5ec1517f63a",
           "ffd2c5c00119b17bc1ac0e82fee8a8709dbea8326b55466399a4fdafbee40f97",
           "ffdd9ccc33b4574e562e09d52d49a80d16f5d48fefc3e4c588c5cfb05db454db"
         ]
@@ -974,7 +1029,7 @@
       },
       "result": {
         "artifact": "turbine_2_archived.joblib",
-        "available_at": "2026-01-31T18:00:00+00:00",
+        "available_at": "2026-01-30T19:00:00+00:00",
         "candidate_metrics": {
           "extra_trees": {
             "metrics": {
@@ -983,9 +1038,9 @@
               "rmse": 0.2950060553471578
             },
             "selection_metrics": {
-              "mae": 0.24448774890671068,
-              "r2": 0.23645124156553754,
-              "rmse": 0.295187145403387
+              "mae": 0.2421769169237248,
+              "r2": 0.22981933149235656,
+              "rmse": 0.2933799660291474
             },
             "validation_by_lead": {
               "24": {
@@ -1013,9 +1068,9 @@
               "rmse": 0.287141335409871
             },
             "selection_metrics": {
-              "mae": 0.22158484366581502,
-              "r2": 0.2765669992478361,
-              "rmse": 0.28732817314317666
+              "mae": 0.2191357352369871,
+              "r2": 0.2737549014725664,
+              "rmse": 0.2848890482137291
             },
             "validation_by_lead": {
               "24": {
@@ -1118,15 +1173,15 @@
         "model_source": "archived_open_meteo_single_runs",
         "random_seed": 42,
         "selected_model": "hist_gradient_boosting",
-        "selection_basis": "lowest clipped January MAE on identical pooled rows available by Jan31 23:00 station time; final January hour is reporting-only; January targets are never used for fitting",
+        "selection_basis": "lowest clipped January MAE on identical pooled rows available by Jan31 00:00 station time; later January targets are reporting-only; January targets are never used for fitting",
         "selection_metrics": {
-          "mae": 0.22158484366581502,
-          "r2": 0.2765669992478361,
-          "rmse": 0.28732817314317666
+          "mae": 0.2191357352369871,
+          "r2": 0.2737549014725664,
+          "rmse": 0.2848890482137291
         },
         "selection_validation_range": {
-          "end": "2026-01-31T17:00:00+00:00",
-          "rows": 1486,
+          "end": "2026-01-30T18:00:00+00:00",
+          "rows": 1440,
           "start": "2025-12-31T19:00:00+00:00"
         },
         "software_versions": {
@@ -1144,7 +1199,7 @@
         "training_rows_audit": {
           "file": "turbine_2_archived_training_rows.csv",
           "rows": 2952,
-          "sha256": "632ef99b362da8a1beb252da376cd33a6aac279d0667955657f422d06cea667f",
+          "sha256": "71de926b7a6b24ae83d40ca5c4178cf74206ca1a9bbb78e7511ebda1bfa39d56",
           "used_weather_cache_input_hashes": [
             "0099499e1ab9a719b07738a4fdb9ca3fbdaf72bfd97e14630e00cc8ba9625d4f",
             "00e6ea5aa0fe8c86a35cda6d989c456129d4bee34c4a79719f1972a498cf0eea",
@@ -1431,7 +1486,7 @@
     "provider": "Open-Meteo"
   },
   "lead_time_semantics": "Forecast lead is valid_time - issue_time. Only cached rows within +/-3h of 24h or 48h are eligible; both available lead groups are pooled.",
-  "model_selection_available_at": "2026-01-31T18:00:00+00:00",
+  "model_selection_available_at": "2026-01-30T19:00:00+00:00",
   "random_seed": 42,
   "scada_timezone": "Asia/Almaty",
   "scada_weather_baseline": {
@@ -1539,7 +1594,7 @@
   "selected_models": {
     "turbine_1": {
       "artifact": "turbine_1_archived.joblib",
-      "available_at": "2026-01-31T18:00:00+00:00",
+      "available_at": "2026-01-30T19:00:00+00:00",
       "candidate_metrics": {
         "extra_trees": {
           "metrics": {
@@ -1548,9 +1603,9 @@
             "rmse": 0.2847259745957368
           },
           "selection_metrics": {
-            "mae": 0.23762962958095,
-            "r2": 0.2873699068249379,
-            "rmse": 0.2849106986391459
+            "mae": 0.235774520158179,
+            "r2": 0.2852337768730414,
+            "rmse": 0.28333883065630094
           },
           "validation_by_lead": {
             "24": {
@@ -1578,9 +1633,9 @@
             "rmse": 0.2748416126898035
           },
           "selection_metrics": {
-            "mae": 0.19834380137353427,
-            "r2": 0.33608965248652556,
-            "rmse": 0.27499917911986016
+            "mae": 0.19532370079820183,
+            "r2": 0.3352504944075262,
+            "rmse": 0.27324555010255214
           },
           "validation_by_lead": {
             "24": {
@@ -1683,15 +1738,15 @@
       "model_source": "archived_open_meteo_single_runs",
       "random_seed": 42,
       "selected_model": "hist_gradient_boosting",
-      "selection_basis": "lowest clipped January MAE on identical pooled rows available by Jan31 23:00 station time; final January hour is reporting-only; January targets are never used for fitting",
+      "selection_basis": "lowest clipped January MAE on identical pooled rows available by Jan31 00:00 station time; later January targets are reporting-only; January targets are never used for fitting",
       "selection_metrics": {
-        "mae": 0.19834380137353427,
-        "r2": 0.33608965248652556,
-        "rmse": 0.27499917911986016
+        "mae": 0.19532370079820183,
+        "r2": 0.3352504944075262,
+        "rmse": 0.27324555010255214
       },
       "selection_validation_range": {
-        "end": "2026-01-31T17:00:00+00:00",
-        "rows": 1486,
+        "end": "2026-01-30T18:00:00+00:00",
+        "rows": 1440,
         "start": "2025-12-31T19:00:00+00:00"
       },
       "software_versions": {
@@ -1709,7 +1764,7 @@
       "training_rows_audit": {
         "file": "turbine_1_archived_training_rows.csv",
         "rows": 2960,
-        "sha256": "dc816ba79bc798c6a768a08f137894ae8da079d642d7e533c6070d8187bfdc8f",
+        "sha256": "fbe8587d229311c319871286d050ecf9f1eb258cfe9c16b4878a3ea2ad50ed62",
         "used_weather_cache_input_hashes": [
           "0326b731fdda58f903372afddeb3c1502b3dedaadf0d7939acc9cadd4d12a2af",
           "047d6217c3efa293576cd8bb13c227286f0cc70dec3e762db8894988e69875b0",
@@ -1971,7 +2026,7 @@
     },
     "turbine_2": {
       "artifact": "turbine_2_archived.joblib",
-      "available_at": "2026-01-31T18:00:00+00:00",
+      "available_at": "2026-01-30T19:00:00+00:00",
       "candidate_metrics": {
         "extra_trees": {
           "metrics": {
@@ -1980,9 +2035,9 @@
             "rmse": 0.2950060553471578
           },
           "selection_metrics": {
-            "mae": 0.24448774890671068,
-            "r2": 0.23645124156553754,
-            "rmse": 0.295187145403387
+            "mae": 0.2421769169237248,
+            "r2": 0.22981933149235656,
+            "rmse": 0.2933799660291474
           },
           "validation_by_lead": {
             "24": {
@@ -2010,9 +2065,9 @@
             "rmse": 0.287141335409871
           },
           "selection_metrics": {
-            "mae": 0.22158484366581502,
-            "r2": 0.2765669992478361,
-            "rmse": 0.28732817314317666
+            "mae": 0.2191357352369871,
+            "r2": 0.2737549014725664,
+            "rmse": 0.2848890482137291
           },
           "validation_by_lead": {
             "24": {
@@ -2115,15 +2170,15 @@
       "model_source": "archived_open_meteo_single_runs",
       "random_seed": 42,
       "selected_model": "hist_gradient_boosting",
-      "selection_basis": "lowest clipped January MAE on identical pooled rows available by Jan31 23:00 station time; final January hour is reporting-only; January targets are never used for fitting",
+      "selection_basis": "lowest clipped January MAE on identical pooled rows available by Jan31 00:00 station time; later January targets are reporting-only; January targets are never used for fitting",
       "selection_metrics": {
-        "mae": 0.22158484366581502,
-        "r2": 0.2765669992478361,
-        "rmse": 0.28732817314317666
+        "mae": 0.2191357352369871,
+        "r2": 0.2737549014725664,
+        "rmse": 0.2848890482137291
       },
       "selection_validation_range": {
-        "end": "2026-01-31T17:00:00+00:00",
-        "rows": 1486,
+        "end": "2026-01-30T18:00:00+00:00",
+        "rows": 1440,
         "start": "2025-12-31T19:00:00+00:00"
       },
       "software_versions": {
@@ -2141,7 +2196,7 @@
       "training_rows_audit": {
         "file": "turbine_2_archived_training_rows.csv",
         "rows": 2952,
-        "sha256": "632ef99b362da8a1beb252da376cd33a6aac279d0667955657f422d06cea667f",
+        "sha256": "71de926b7a6b24ae83d40ca5c4178cf74206ca1a9bbb78e7511ebda1bfa39d56",
         "used_weather_cache_input_hashes": [
           "0099499e1ab9a719b07738a4fdb9ca3fbdaf72bfd97e14630e00cc8ba9625d4f",
           "00e6ea5aa0fe8c86a35cda6d989c456129d4bee34c4a79719f1972a498cf0eea",
