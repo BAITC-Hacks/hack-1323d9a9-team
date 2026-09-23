@@ -1,0 +1,558 @@
+{
+  "status": "COMPLETE",
+  "message": "Forecast completed",
+  "forecast": [
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-08T19:00:00Z",
+      "prediction": 0.45780249817382757
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-08T19:00:00Z",
+      "prediction": 0.4481563895489205
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-08T20:00:00Z",
+      "prediction": 0.42641276452092863
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-08T20:00:00Z",
+      "prediction": 0.5864169896507478
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-08T21:00:00Z",
+      "prediction": 0.6007014648839251
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-08T21:00:00Z",
+      "prediction": 0.5918073955704864
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-08T22:00:00Z",
+      "prediction": 0.5321031575274592
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-08T22:00:00Z",
+      "prediction": 0.5747666574609447
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-08T23:00:00Z",
+      "prediction": 0.8369516935063238
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-08T23:00:00Z",
+      "prediction": 0.8733923289239234
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-09T00:00:00Z",
+      "prediction": 0.9076692901809591
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-09T00:00:00Z",
+      "prediction": 0.9215684264929864
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-09T01:00:00Z",
+      "prediction": 0.7980624439583266
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-09T01:00:00Z",
+      "prediction": 0.8371179209691703
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-09T02:00:00Z",
+      "prediction": 0.7651178843298271
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-09T02:00:00Z",
+      "prediction": 0.7511123280972963
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-09T03:00:00Z",
+      "prediction": 0.8003742754747694
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-09T03:00:00Z",
+      "prediction": 0.7799235686293576
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-09T04:00:00Z",
+      "prediction": 0.8051353417293418
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-09T04:00:00Z",
+      "prediction": 0.8335416746033179
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-09T05:00:00Z",
+      "prediction": 0.7722903547990095
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-09T05:00:00Z",
+      "prediction": 0.8652465917757461
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-09T06:00:00Z",
+      "prediction": 0.8630142645287743
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-09T06:00:00Z",
+      "prediction": 0.9385893171063999
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-09T07:00:00Z",
+      "prediction": 0.8718514516178424
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-09T07:00:00Z",
+      "prediction": 0.9663281493846542
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-09T08:00:00Z",
+      "prediction": 0.8474502457420765
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-09T08:00:00Z",
+      "prediction": 0.9565227776389221
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-09T09:00:00Z",
+      "prediction": 0.7719839575691645
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-09T09:00:00Z",
+      "prediction": 0.8779749140415548
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-09T10:00:00Z",
+      "prediction": 0.7959203927068514
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-09T10:00:00Z",
+      "prediction": 0.8146166068175359
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-09T11:00:00Z",
+      "prediction": 0.8305056747747654
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-09T11:00:00Z",
+      "prediction": 0.7691875274975878
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-09T12:00:00Z",
+      "prediction": 0.8856518389376382
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-09T12:00:00Z",
+      "prediction": 0.9003376084679094
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-09T13:00:00Z",
+      "prediction": 0.7784394681634976
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-09T13:00:00Z",
+      "prediction": 0.7139646158931966
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-09T14:00:00Z",
+      "prediction": 0.7035814550158243
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-09T14:00:00Z",
+      "prediction": 0.6435657652720216
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-09T15:00:00Z",
+      "prediction": 0.5245668331877164
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-09T15:00:00Z",
+      "prediction": 0.5504312311353212
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-09T16:00:00Z",
+      "prediction": 0.39953190973855357
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-09T16:00:00Z",
+      "prediction": 0.4925071802936961
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-09T17:00:00Z",
+      "prediction": 0.5132793352613686
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-09T17:00:00Z",
+      "prediction": 0.5578445962330932
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-09T18:00:00Z",
+      "prediction": 0.43410451305971454
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-09T18:00:00Z",
+      "prediction": 0.41731576159655415
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-09T19:00:00Z",
+      "prediction": 0.3050348288061882
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-09T19:00:00Z",
+      "prediction": 0.3705954751040299
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-09T20:00:00Z",
+      "prediction": 0.3950289005311719
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-09T20:00:00Z",
+      "prediction": 0.42677277750242537
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-09T21:00:00Z",
+      "prediction": 0.16688200161301314
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-09T21:00:00Z",
+      "prediction": 0.0829245755439425
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-09T22:00:00Z",
+      "prediction": 0.1341969515466997
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-09T22:00:00Z",
+      "prediction": 0.23691960213532873
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-09T23:00:00Z",
+      "prediction": 0.283849959374416
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-09T23:00:00Z",
+      "prediction": 0.3685529813836917
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-10T00:00:00Z",
+      "prediction": 0.1879345953661564
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-10T00:00:00Z",
+      "prediction": 0.22445842508115096
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-10T01:00:00Z",
+      "prediction": 0.2299790462124275
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-10T01:00:00Z",
+      "prediction": 0.24535526684992914
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-10T02:00:00Z",
+      "prediction": 0.3278392072977386
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-10T02:00:00Z",
+      "prediction": 0.34797342731412423
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-10T03:00:00Z",
+      "prediction": 0.24167247918272478
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-10T03:00:00Z",
+      "prediction": 0.0
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-10T04:00:00Z",
+      "prediction": 0.10145816885782726
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-10T04:00:00Z",
+      "prediction": 0.007492177976177352
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-10T05:00:00Z",
+      "prediction": 0.21362316885031066
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-10T05:00:00Z",
+      "prediction": 0.13317448324399458
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-10T06:00:00Z",
+      "prediction": 0.239711535854149
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-10T06:00:00Z",
+      "prediction": 0.2336136573119095
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-10T07:00:00Z",
+      "prediction": 0.08150897755585867
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-10T07:00:00Z",
+      "prediction": 0.025881127698656903
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-10T08:00:00Z",
+      "prediction": 0.6398290046924539
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-10T08:00:00Z",
+      "prediction": 0.4131307909460931
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-10T09:00:00Z",
+      "prediction": 0.44893552962691347
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-10T09:00:00Z",
+      "prediction": 0.16142755344848095
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-10T10:00:00Z",
+      "prediction": 0.15562193175135813
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-10T10:00:00Z",
+      "prediction": 0.09874910785046194
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-10T11:00:00Z",
+      "prediction": 0.04938710152473762
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-10T11:00:00Z",
+      "prediction": 0.0566748999019154
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-10T12:00:00Z",
+      "prediction": 0.18236414947297203
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-10T12:00:00Z",
+      "prediction": 0.2026127427246611
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-10T13:00:00Z",
+      "prediction": 0.5438730974154641
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-10T13:00:00Z",
+      "prediction": 0.43085422422879865
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-10T14:00:00Z",
+      "prediction": 0.6385425191564258
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-10T14:00:00Z",
+      "prediction": 0.7187732110253912
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-10T15:00:00Z",
+      "prediction": 0.741361679291072
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-10T15:00:00Z",
+      "prediction": 0.8411791546390487
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-10T16:00:00Z",
+      "prediction": 0.7772611261692438
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-10T16:00:00Z",
+      "prediction": 0.8950322524706731
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-10T17:00:00Z",
+      "prediction": 0.7379113529658871
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-10T17:00:00Z",
+      "prediction": 0.8526793434124952
+    },
+    {
+      "turbine_id": "turbine_1",
+      "valid_time": "2026-02-10T18:00:00Z",
+      "prediction": 0.7775269618147496
+    },
+    {
+      "turbine_id": "turbine_2",
+      "valid_time": "2026-02-10T18:00:00Z",
+      "prediction": 0.8768155222355656
+    }
+  ],
+  "metadata": {
+    "issue_time": "2026-02-08T18:00:00Z",
+    "horizon_hours": 48,
+    "input_hash": "17333b42cff31e84a6a51727c494e8e84ae39dde25a20a7844b886dcde8649c4",
+    "forecast_version": 1,
+    "provider": "Open-Meteo",
+    "model": "ecmwf_ifs",
+    "turbines": [
+      "turbine_1",
+      "turbine_2"
+    ],
+    "weather": {
+      "turbine_1": {
+        "weather_run_time": "2026-02-08T12:00:00Z",
+        "provider": "Open-Meteo",
+        "model": "ecmwf_ifs",
+        "forecast_source": "open_meteo_single_runs",
+        "publication_safety_delay_seconds": 21600.0,
+        "raw_response_sha256": "67c47a3248c37703feba65bdf9e43c4e0396efd6793c2ad19fa138fe0e3bade2",
+        "fetch_time": "2026-09-23T11:15:29.539276Z",
+        "input_hash": "277a46f1e93208a24836cf0a84c361854fb80efb8b58f1115136be31b1b59218"
+      },
+      "turbine_2": {
+        "weather_run_time": "2026-02-08T12:00:00Z",
+        "provider": "Open-Meteo",
+        "model": "ecmwf_ifs",
+        "forecast_source": "open_meteo_single_runs",
+        "publication_safety_delay_seconds": 21600.0,
+        "raw_response_sha256": "2cfc5da4ac9b07b01b3f6c5aa4d82e31ea862aaf614adfc99df7104a283b327b",
+        "fetch_time": "2026-09-23T11:15:29.865882Z",
+        "input_hash": "055aaf8c06ca2b642dfac05a06f1a1421c802ea9933b63d48fa6e80338de9a78"
+      }
+    },
+    "models": {
+      "turbine_1": "turbine_1:hist_gradient_boosting:482b468cd9bb4046:cea06e3af7ac",
+      "turbine_2": "turbine_2:hist_gradient_boosting:523fed4343197162:cea06e3af7ac"
+    },
+    "model_details": {
+      "turbine_1": {
+        "model_source": "archived_open_meteo_single_runs",
+        "available_at": "2026-01-31T18:00:00+00:00",
+        "feature_timezone": "UTC",
+        "warnings": []
+      },
+      "turbine_2": {
+        "model_source": "archived_open_meteo_single_runs",
+        "available_at": "2026-01-31T18:00:00+00:00",
+        "feature_timezone": "UTC",
+        "warnings": []
+      }
+    },
+    "warnings": [],
+    "state_history": [
+      "FETCH_WEATHER",
+      "VALIDATE_INPUT",
+      "BUILD_FEATURES",
+      "RUN_MODEL",
+      "VALIDATE_OUTPUT",
+      "SAVE_RESULT",
+      "COMPLETE"
+    ],
+    "output_path": "C:\\Users\\raniz\\hack-1323d9a9-team\\data\\forecasts\\february\\forecast_20260208T180000Z_v1_17333b42cff3.json"
+  },
+  "states": [
+    "FETCH_WEATHER",
+    "VALIDATE_INPUT",
+    "BUILD_FEATURES",
+    "RUN_MODEL",
+    "VALIDATE_OUTPUT",
+    "SAVE_RESULT",
+    "COMPLETE"
+  ]
+}

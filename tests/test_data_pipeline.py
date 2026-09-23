@@ -18,6 +18,36 @@ def write_raw(path: Path, rows: list[list[str]]) -> None:
 
 
 class ScadaPipelineTests(unittest.TestCase):
+    def test_single_digit_hours_in_raw_export_are_not_discarded(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            raw, output = root / "raw.csv", root / "hourly.csv"
+            write_raw(raw, [[f"2025-12-31 {hour}:{minute:02d}:00", "3", "2", "0.3"] for hour in range(24) for minute in (0, 10, 20)])
+            stats = process_turbine(raw, output)
+            self.assertEqual(stats.parsed_rows, 72)
+            self.assertEqual(stats.output_rows, 24)
+
+    def test_duplicate_and_nonfinite_samples_do_not_inflate_hourly_coverage(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            raw, output = root / "raw.csv", root / "hourly.csv"
+            write_raw(raw, [
+                ["2025-12-31 0:00:00", "3", "2", "0.3"],
+                ["2025-12-31 0:00:00", "3", "2", "0.3"],
+                ["2025-12-31 0:10:00", "3", "2", "0.3"],
+                ["2025-12-31 0:20:00", "nan", "2", "0.3"],
+            ])
+            stats = process_turbine(raw, output)
+            self.assertEqual(stats.duplicate_timestamps, 1)
+            self.assertEqual(stats.output_rows, 0)
+
+    def test_february_targets_are_excluded_from_historical_preprocessing(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            raw, output = root / "raw.csv", root / "hourly.csv"
+            write_raw(raw, [[f"2026-02-01 0:{minute:02d}:00", "3", "2", "0.3"] for minute in (0, 10, 20)])
+            self.assertEqual(process_turbine(raw, output).output_rows, 0)
+
     def test_hourly_aggregation_filters_sparse_hours_and_does_not_change_raw(self) -> None:
         with tempfile.TemporaryDirectory(dir=Path.cwd()) as temporary:
             root = Path(temporary)

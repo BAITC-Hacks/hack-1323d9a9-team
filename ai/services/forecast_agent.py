@@ -11,8 +11,10 @@ import hashlib
 import json
 import math
 import re
+import threading
+import uuid
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Callable, Mapping, Protocol, Sequence
 
@@ -36,6 +38,7 @@ REQUIRED_WEATHER_FIELDS = (
     "temperature_2m",
     "surface_pressure",
 )
+_SAVE_LOCK = threading.Lock()
 
 
 class ForecastAgentError(RuntimeError):
@@ -190,7 +193,7 @@ class ForecastAgent:
         if len(set(self.turbine_ids)) != len(self.turbine_ids):
             raise ValueError("turbine_ids must be unique")
 
-    def run(self, issue_time: datetime) -> ForecastResult:
+    def run(self, issue_time: datetime, horizon_hours: int = 48) -> ForecastResult:
         """Execute every workflow stage once and return an auditable result.
 
         Stage failures are returned as ``status='FAILED'`` with the failing
@@ -200,6 +203,10 @@ class ForecastAgent:
         states: list[str] = []
         try:
             issue = _as_utc(issue_time, "issue_time")
+            if issue.minute or issue.second or issue.microsecond:
+                raise ForecastAgentError("issue_time must be aligned to a UTC hour")
+            if isinstance(horizon_hours, bool) or not isinstance(horizon_hours, int) or not 24 <= horizon_hours <= 48:
+                raise ForecastAgentError("horizon_hours must be an integer between 24 and 48")
         except Exception as exc:
             states.append("FAILED")
             return self._failed(str(exc), states)
@@ -212,7 +219,7 @@ class ForecastAgent:
             }
 
             self._enter(states, "VALIDATE_INPUT")
-            validated = self._validate_weather(weather, issue)
+            validated = self._validate_weather(weather, issue, horizon_hours)
 
             self._enter(states, "BUILD_FEATURES")
             features = {
@@ -222,6 +229,10 @@ class ForecastAgent:
 
             self._enter(states, "RUN_MODEL")
             models = {turbine_id: self._load_model(turbine_id) for turbine_id in self.turbine_ids}
+            for turbine_id, model in models.items():
+                available_at = getattr(model, "available_at", None)
+                if available_at is not None and _parse_time(available_at, "model.available_at") > issue:
+                    raise ForecastAgentError(f"{turbine_id}: model selection uses data unavailable at issue_time")
             input_hash = self._input_hash(issue, weather, features, models)
             raw_predictions = {
                 turbine_id: self._predict(models[turbine_id], features[turbine_id], turbine_id)
@@ -232,15 +243,7 @@ class ForecastAgent:
             forecasts = self._validate_and_clip_predictions(raw_predictions, features)
 
             self._enter(states, "SAVE_RESULT")
-            version, output_path = self._save_result(issue, input_hash, forecasts, weather, models, states)
-            self._enter(states, "COMPLETE")
-            # Rewrite the artifact after COMPLETE is known so audit state is complete.
-            metadata = self._metadata(issue, input_hash, weather, models, version, output_path, states)
-            output_path = self._write_artifact(
-                output_path,
-                ForecastResult("COMPLETE", "Forecast completed", forecasts, metadata, output_path, tuple(states)),
-            )
-            return ForecastResult("COMPLETE", "Forecast completed", forecasts, metadata, output_path, tuple(states))
+            return self._save_result(issue, input_hash, forecasts, weather, models, states, horizon_hours)
         except Exception as exc:
             if not states or states[-1] != "FAILED":
                 states.append("FAILED")
@@ -256,11 +259,11 @@ class ForecastAgent:
     def _failed(message: str, states: Sequence[str]) -> ForecastResult:
         return ForecastResult("FAILED", message, (), {"error": message}, None, tuple(states))
 
-    def _validate_weather(self, weather: Mapping[str, Any], issue: datetime) -> dict[str, tuple[dict[str, Any], ...]]:
+    def _validate_weather(self, weather: Mapping[str, Any], issue: datetime, horizon_hours: int) -> dict[str, tuple[dict[str, Any], ...]]:
         if set(weather) != set(self.turbine_ids):
             raise ForecastAgentError("Weather was not obtained for exactly the configured turbines")
         validated: dict[str, tuple[dict[str, Any], ...]] = {}
-        timelines: dict[str, tuple[datetime, ...]] = {}
+        expected = tuple(issue + timedelta(hours=lead) for lead in range(1, horizon_hours + 1))
         delay = getattr(self.weather_client, "publication_safety_delay", DEFAULT_PUBLICATION_SAFETY_DELAY)
         safe_run = select_safe_run(issue, delay)
         for turbine_id, result in weather.items():
@@ -288,6 +291,10 @@ class ForecastAgent:
             rows: list[dict[str, Any]] = []
             for index, record in enumerate(hourly):
                 valid_time = _parse_time(_get(record, "valid_time"), f"{turbine_id}.valid_time[{index}]")
+                # A run may contain historical hours and a ten-day forecast. Only
+                # the requested future window belongs in this forecast artifact.
+                if valid_time <= issue or valid_time > expected[-1]:
+                    continue
                 row: dict[str, Any] = {"valid_time": valid_time}
                 for field in REQUIRED_WEATHER_FIELDS:
                     value = _get(record, field)
@@ -299,11 +306,12 @@ class ForecastAgent:
             times = tuple(row["valid_time"] for row in rows)
             if len(set(times)) != len(times):
                 raise ForecastAgentError(f"{turbine_id}: duplicate weather valid_time values")
+            if times != expected:
+                raise ForecastAgentError(
+                    f"{turbine_id}: weather must cover every hour from {_iso_utc(expected[0])} "
+                    f"through {_iso_utc(expected[-1])}; got {len(times)} rows for {horizon_hours} hours"
+                )
             validated[turbine_id] = tuple(rows)
-            timelines[turbine_id] = times
-        expected = timelines[self.turbine_ids[0]]
-        if any(times != expected for times in timelines.values()):
-            raise ForecastAgentError("Weather timelines for the configured turbines do not match")
         return validated
 
     @staticmethod
@@ -386,6 +394,7 @@ class ForecastAgent:
                         "weather_run_time": _canonical(_get(_get(result, "metadata"), "weather_run_time")),
                         "provider": _get(_get(result, "metadata"), "provider"),
                         "model": _get(_get(result, "metadata"), "model"),
+                        "forecast_source": _get(_get(result, "metadata"), "forecast_source"),
                         "input_hash": _get(_get(result, "metadata"), "input_hash"),
                     },
                     "hourly": [
@@ -404,17 +413,22 @@ class ForecastAgent:
         encoded = json.dumps(payload, sort_keys=True, separators=(",", ":"), default=str).encode("utf-8")
         return hashlib.sha256(encoded).hexdigest()
 
-    def _save_result(self, issue: datetime, input_hash: str, forecasts: tuple[ForecastPoint, ...], weather: Mapping[str, Any], models: Mapping[str, Any], states: Sequence[str]) -> tuple[int, Path]:
-        version = self._next_version(issue, input_hash)
-        path = self.output_dir / f"forecast_{self._issue_token(issue)}_v{version}_{input_hash[:12]}.json"
-        # This preliminary write makes SAVE_RESULT observable even if callers inspect the directory mid-run.
-        metadata = self._metadata(issue, input_hash, weather, models, version, path, states)
-        self._write_artifact(path, ForecastResult("SAVE_RESULT", "Forecast saved", forecasts, metadata, path, tuple(states)))
-        return version, path
+    def _save_result(self, issue: datetime, input_hash: str, forecasts: tuple[ForecastPoint, ...], weather: Mapping[str, Any], models: Mapping[str, Any], states: Sequence[str], horizon_hours: int) -> ForecastResult:
+        # Requests handled concurrently in this process must allocate versions
+        # consistently. Publish only the final COMPLETE JSON, in one replace.
+        with _SAVE_LOCK:
+            version = self._next_version(issue, input_hash)
+            path = self.output_dir / f"forecast_{self._issue_token(issue)}_v{version}_{input_hash[:12]}.json"
+            complete_states = (*states, "COMPLETE")
+            metadata = self._metadata(issue, input_hash, weather, models, version, path, complete_states, horizon_hours)
+            result = ForecastResult("COMPLETE", "Forecast completed", forecasts, metadata, path, complete_states)
+            self._write_artifact(path, result)
+            return result
 
-    def _metadata(self, issue: datetime, input_hash: str, weather: Mapping[str, Any], models: Mapping[str, Any], version: int, path: Path, states: Sequence[str]) -> dict[str, Any]:
+    def _metadata(self, issue: datetime, input_hash: str, weather: Mapping[str, Any], models: Mapping[str, Any], version: int, path: Path, states: Sequence[str], horizon_hours: int) -> dict[str, Any]:
         return {
             "issue_time": _iso_utc(issue),
+            "horizon_hours": horizon_hours,
             "input_hash": input_hash,
             "forecast_version": version,
             "provider": "Open-Meteo",
@@ -425,24 +439,43 @@ class ForecastAgent:
                     "weather_run_time": _iso_utc(_parse_time(_get(_get(result, "metadata"), "weather_run_time"), "weather_run_time")),
                     "provider": _get(_get(result, "metadata"), "provider"),
                     "model": _get(_get(result, "metadata"), "model"),
+                    "forecast_source": _get(_get(result, "metadata"), "forecast_source"),
+                    "publication_safety_delay_seconds": getattr(self.weather_client, "publication_safety_delay", DEFAULT_PUBLICATION_SAFETY_DELAY).total_seconds(),
+                    "raw_response_sha256": _get(_get(result, "metadata"), "raw_response_sha256"),
                     "fetch_time": _iso_utc(_parse_time(_get(_get(result, "metadata"), "fetch_time"), "fetch_time")),
                     "input_hash": _get(_get(result, "metadata"), "input_hash"),
                 }
                 for turbine_id, result in weather.items()
             },
             "models": {turbine_id: _model_key(models[turbine_id], turbine_id) for turbine_id in self.turbine_ids},
+            "model_details": {
+                turbine_id: {
+                    "model_source": getattr(models[turbine_id], "model_source", "unspecified"),
+                    "available_at": _canonical(getattr(models[turbine_id], "available_at", None)),
+                    "feature_timezone": getattr(models[turbine_id], "feature_timezone", "UTC"),
+                    "warnings": list(getattr(models[turbine_id], "warnings", ())),
+                }
+                for turbine_id in self.turbine_ids
+            },
+            "warnings": list(dict.fromkeys(
+                warning for turbine_id in self.turbine_ids
+                for warning in getattr(models[turbine_id], "warnings", ())
+            )),
             "state_history": list(states),
             "output_path": str(path),
         }
 
     def _write_artifact(self, path: Path, result: ForecastResult) -> Path:
         path.parent.mkdir(parents=True, exist_ok=True)
-        temporary = path.with_suffix(path.suffix + ".tmp")
-        temporary.write_text(json.dumps(result.to_json(), indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-        temporary.replace(path)
+        temporary = path.with_suffix(f".{uuid.uuid4().hex}.tmp")
+        try:
+            temporary.write_text(json.dumps(result.to_json(), indent=2, ensure_ascii=False, allow_nan=False) + "\n", encoding="utf-8")
+            temporary.replace(path)
+        finally:
+            temporary.unlink(missing_ok=True)
         return path
 
-    def _next_version(self, issue: datetime, input_hash: str) -> tuple[int, Path] | int:
+    def _next_version(self, issue: datetime, input_hash: str) -> int:
         token = self._issue_token(issue)
         highest = 0
         for path in self.output_dir.glob(f"forecast_{token}_v*.json"):

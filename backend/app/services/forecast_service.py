@@ -3,7 +3,8 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
+import math
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
@@ -49,22 +50,15 @@ class ForecastService:
         self.output_dir = Path(output_dir)
         self.metrics_path = Path(metrics_path)
         self.agent = agent if agent is not None else ForecastAgent(
-            model_loader=ArtifactModelLoader(metrics_path=self.metrics_path),
+            model_loader=ArtifactModelLoader(artifacts_dir=self.metrics_path.parent, metrics_path=self.metrics_path),
             output_dir=self.output_dir,
         )
 
     def run(self, issue_time: datetime, horizon_hours: int) -> ForecastRunResponse:
-        result: ForecastResult = self.agent.run(issue_time)
+        result: ForecastResult = self.agent.run(issue_time, horizon_hours=horizon_hours)
         if result.status != "COMPLETE":
             raise self._agent_error(result)
-        response = self._response_from_result(result, horizon_hours)
-        if not response.forecasts:
-            raise ForecastServiceError(
-                f"Agent completed without forecast rows in the requested {horizon_hours}-hour horizon",
-                code="agent_failure",
-                status_code=500,
-            )
-        return response
+        return self._response_from_result(result, horizon_hours)
 
     def latest(self) -> ForecastRunResponse:
         candidates = sorted(self.output_dir.glob("forecast_*.json"), key=lambda path: path.stat().st_mtime, reverse=True)
@@ -99,73 +93,83 @@ class ForecastService:
 
     @classmethod
     def _response_from_result(cls, result: ForecastResult, horizon_hours: int) -> ForecastRunResponse:
-        issue_time = _parse_utc(result.metadata.get("issue_time"))
-        weather_meta = result.metadata.get("weather", {})
-        model_meta = result.metadata.get("models", {})
-        rows: list[ForecastItem] = []
-        warnings: list[str] = []
-        for point in result.forecasts:
-            valid_time = _parse_utc(point.to_json()["valid_time"])
-            lead_seconds = (valid_time - issue_time).total_seconds()
-            lead_hour = int(round(lead_seconds / 3600))
-            if lead_hour < 1 or lead_hour > horizon_hours:
-                continue
-            turbine_weather = weather_meta.get(point.turbine_id, {})
-            model_version = str(model_meta.get(point.turbine_id, "unknown"))
-            if ":" in model_version:
-                model_version = model_version.split(":", 1)[1]
-            rows.append(ForecastItem(
-                issue_time=issue_time,
-                weather_run_time=_parse_utc(turbine_weather.get("weather_run_time")),
-                model_version=model_version,
-                turbine=point.turbine_id,
-                valid_time=valid_time,
-                lead_hour=lead_hour,
-                predicted_normalized_power=float(point.prediction),
-                agent_status=result.status,
-                warnings=list(warnings),
-            ))
-        return ForecastRunResponse(
-            status=result.status,
-            issue_time=issue_time,
-            horizon_hours=horizon_hours,
-            forecasts=rows,
-            warnings=warnings,
-            metadata=result.metadata,
-        )
+        if result.metadata.get("horizon_hours") != horizon_hours:
+            raise ForecastServiceError("Agent returned a different forecast horizon", code="agent_failure", status_code=500)
+        return cls._response_from_payload(result.to_json())
 
     @classmethod
     def _response_from_payload(cls, payload: dict[str, Any]) -> ForecastRunResponse:
+        try:
+            return cls._validated_response(payload)
+        except ForecastServiceError:
+            raise
+        except (TypeError, ValueError, KeyError, AttributeError) as exc:
+            raise ForecastServiceError(f"Invalid forecast artifact: {exc}", code="agent_failure", status_code=500) from exc
+
+    @classmethod
+    def _validated_response(cls, payload: dict[str, Any]) -> ForecastRunResponse:
         if payload.get("status") != "COMPLETE":
             raise ForecastServiceError("Latest artifact is not complete", code="agent_failure", status_code=500)
         metadata = payload.get("metadata")
         if not isinstance(metadata, dict):
             raise ForecastServiceError("Latest artifact has no metadata", code="agent_failure", status_code=500)
         issue_time = _parse_utc(metadata.get("issue_time"))
+        if issue_time.minute or issue_time.second or issue_time.microsecond:
+            raise ValueError("issue_time must be aligned to a UTC hour")
+        horizon = metadata.get("horizon_hours")
+        if isinstance(horizon, bool) or not isinstance(horizon, int) or not 24 <= horizon <= 48:
+            raise ValueError("missing or invalid horizon_hours")
+        turbines = metadata.get("turbines")
+        if not isinstance(turbines, list) or not turbines or len(set(turbines)) != len(turbines):
+            raise ValueError("missing or invalid turbines")
+        warnings = metadata.get("warnings", [])
+        if not isinstance(warnings, list) or not all(isinstance(warning, str) for warning in warnings):
+            raise ValueError("invalid forecast warnings")
         weather_meta = metadata.get("weather", {})
         model_meta = metadata.get("models", {})
+        model_details = metadata.get("model_details", {})
         rows = []
         for raw in payload.get("forecast", []):
             turbine = raw.get("turbine_id")
+            valid_time = _parse_utc(raw.get("valid_time"))
+            lead_hours = (valid_time - issue_time).total_seconds() / 3600
+            if not lead_hours.is_integer() or not 1 <= lead_hours <= horizon:
+                raise ValueError("forecast row lies outside the exact hourly horizon")
+            turbine_weather = weather_meta.get(turbine, {})
+            weather_run_time = _parse_utc(turbine_weather.get("weather_run_time"))
+            if weather_run_time > issue_time:
+                raise ValueError("forecast weather run is newer than issue_time")
+            delay = turbine_weather.get("publication_safety_delay_seconds", 0)
+            if isinstance(delay, bool) or not isinstance(delay, (int, float)) or not math.isfinite(delay) or delay < 0:
+                raise ValueError("invalid weather publication safety delay")
+            if weather_run_time + timedelta(seconds=delay) > issue_time:
+                raise ValueError("forecast weather run was not available at issue_time")
+            available_at = model_details.get(turbine, {}).get("available_at")
+            if available_at is not None and _parse_utc(available_at) > issue_time:
+                raise ValueError("model selection uses data unavailable at issue_time")
             model_version = str(model_meta.get(turbine, "unknown"))
             if ":" in model_version:
                 model_version = model_version.split(":", 1)[1]
             rows.append(ForecastItem(
                 issue_time=issue_time,
-                weather_run_time=_parse_utc(weather_meta.get(turbine, {}).get("weather_run_time")),
+                weather_run_time=weather_run_time,
                 model_version=model_version,
                 turbine=turbine,
-                valid_time=_parse_utc(raw.get("valid_time")),
-                lead_hour=int(round((_parse_utc(raw.get("valid_time")) - issue_time).total_seconds() / 3600)),
+                valid_time=valid_time,
+                lead_hour=int(lead_hours),
                 predicted_normalized_power=float(raw.get("prediction")),
                 agent_status="COMPLETE",
-                warnings=[],
+                warnings=warnings,
             ))
+        expected = {(turbine, hour) for turbine in turbines for hour in range(1, horizon + 1)}
+        actual = {(row.turbine, row.lead_hour) for row in rows}
+        if actual != expected or len(rows) != len(expected):
+            raise ValueError("forecast must contain exactly one row per turbine and horizon hour")
         return ForecastRunResponse(
             status="COMPLETE",
             issue_time=issue_time,
-            horizon_hours=max((row.lead_hour for row in rows), default=0),
+            horizon_hours=horizon,
             forecasts=rows,
-            warnings=[],
+            warnings=warnings,
             metadata=metadata,
         )

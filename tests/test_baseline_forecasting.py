@@ -12,6 +12,7 @@ from ai.models.baseline_forecasting import (
     clip_predictions,
     load_chronological_split,
     train_all,
+    _candidate_models,
 )
 
 
@@ -81,6 +82,14 @@ class BaselineForecastingTests(unittest.TestCase):
 
     def test_clipping_always_enforces_normalized_power_bounds(self) -> None:
         self.assertEqual(clip_predictions([-3.0, 0.25, 4.0]), [0.0, 0.25, 1.0])
+
+    def test_nonfinite_predictions_are_rejected_instead_of_masked(self) -> None:
+        for value in (float("nan"), float("inf"), -float("inf")):
+            with self.subTest(value=value), self.assertRaisesRegex(ValueError, "finite"):
+                clip_predictions([value])
+
+    def test_boosting_does_not_use_a_random_early_stopping_holdout(self) -> None:
+        self.assertFalse(_candidate_models()["hist_gradient_boosting"].estimator.early_stopping)
 
 
 if __name__ == "__main__":

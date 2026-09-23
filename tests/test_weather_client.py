@@ -1,5 +1,7 @@
 """Offline tests for archived weather run selection and transport."""
 
+import copy
+import hashlib
 import io
 import json
 import tempfile
@@ -11,6 +13,7 @@ from urllib.parse import parse_qs, urlparse
 
 from ai.services.weather_client import (
     API_URL,
+    FORECAST_SOURCE,
     HOURLY_VARIABLES,
     OpenMeteoArchivedWeatherClient,
     WeatherClientError,
@@ -145,6 +148,7 @@ class WeatherClientTests(unittest.TestCase):
         self.assertEqual(params["models"], ["ecmwf_ifs"])
         self.assertEqual(params["hourly"], [",".join(HOURLY_VARIABLES)])
         self.assertEqual(params["wind_speed_unit"], ["ms"])
+        self.assertEqual(params["temperature_unit"], ["celsius"])
         self.assertEqual(params["timezone"], ["GMT"])
         self.assertEqual(params["timeformat"], ["unixtime"])
         self.assertEqual(params["latitude"], ["43.645138889"])
@@ -157,6 +161,10 @@ class WeatherClientTests(unittest.TestCase):
         self.assertEqual(metadata.weather_run_time, datetime(2026, 2, 1, 6, tzinfo=UTC))
         self.assertEqual(metadata.provider, "Open-Meteo")
         self.assertEqual(metadata.model, "ecmwf_ifs")
+        self.assertEqual(metadata.forecast_source, FORECAST_SOURCE)
+        self.assertEqual(metadata.api_url, API_URL)
+        self.assertEqual(metadata.publication_safety_delay_seconds, 21600)
+        self.assertEqual(metadata.raw_response_sha256, hashlib.sha256(BODY).hexdigest())
         self.assertEqual(metadata.fetch_time, FETCH)
         self.assertEqual(len(metadata.input_hash), 64)
         self.assertLessEqual(metadata.weather_run_time + client.publication_safety_delay, ISSUE)
@@ -175,11 +183,13 @@ class WeatherClientTests(unittest.TestCase):
         self.assertEqual(cached, forecast)
 
     def test_unavailable_selected_run_falls_back_exactly_one_cycle(self):
-        opener = FakeOpener([unavailable_http_error(), BODY])
+        error = unavailable_http_error()
+        opener = FakeOpener([error, BODY])
         client = self.make_client(opener)
         forecast = client.fetch_forecast("turbine_2", ISSUE)
         runs = [parse_qs(urlparse(url).query)["run"][0] for url, _ in opener.calls]
         self.assertEqual(runs, ["2026-02-01T06:00", "2026-02-01T00:00"])
+        self.assertTrue(error.closed)
         self.assertEqual(forecast.metadata.weather_run_time, datetime(2026, 2, 1, 0, tzinfo=UTC))
         self.assertLessEqual(
             forecast.metadata.weather_run_time + client.publication_safety_delay,
@@ -210,6 +220,13 @@ class WeatherClientTests(unittest.TestCase):
             self.make_client(opener, max_retries=1).fetch_forecast("turbine_1", ISSUE)
         self.assertEqual(len(opener.calls), 2)
 
+    def test_fatal_http_error_closes_response_and_preserves_details_and_cause(self):
+        error = HTTPError(API_URL, 403, "Forbidden", {}, io.BytesIO(b'{"reason":"Access denied"}'))
+        with self.assertRaisesRegex(WeatherClientError, "HTTP 403: Access denied") as raised:
+            self.make_client(FakeOpener([error])).fetch_forecast("turbine_1", ISSUE)
+        self.assertTrue(error.closed)
+        self.assertIs(raised.exception.__cause__, error)
+
     def test_rejects_non_utc_or_wrong_wind_units(self):
         for change in ({"utc_offset_seconds": 3600}, {"hourly_units": {**HOURLY_RESPONSE["hourly_units"], "wind_speed_80m": "km/h"}}):
             with self.subTest(change=change):
@@ -218,6 +235,119 @@ class WeatherClientTests(unittest.TestCase):
                 with self.assertRaises(WeatherClientError):
                     self.make_client(opener).fetch_forecast("turbine_1", ISSUE)
                 self.assertFalse(list(self.cache_dir.glob("*.json")))
+
+    def test_cache_only_never_opens_network_and_can_use_cached_older_run(self):
+        missing = FakeOpener([])
+        with self.assertRaisesRegex(WeatherClientError, "cache_only=True"):
+            self.make_client(missing, cache_only=True).fetch_forecast("turbine_1", ISSUE)
+        self.assertEqual(missing.calls, [])
+        original = self.make_client(FakeOpener([unavailable_http_error(), BODY])).fetch_forecast("turbine_1", ISSUE)
+        cached = self.make_client(missing, cache_only=True).fetch_forecast("turbine_1", ISSUE)
+        self.assertEqual(cached, original)
+        self.assertEqual(missing.calls, [])
+
+    def test_rejects_preoperational_hindcasts_before_network_access(self):
+        opener = FakeOpener([])
+        with self.assertRaisesRegex(WeatherClientError, "hindcasts"):
+            self.make_client(opener).fetch_forecast("turbine_1", datetime(2024, 6, 1, tzinfo=UTC))
+        self.assertEqual(opener.calls, [])
+
+    def test_load_cached_forecast_rejects_modified_response_checksum(self):
+        client = self.make_client(FakeOpener([BODY]))
+        forecast = client.fetch_forecast("turbine_1", ISSUE)
+        stem = forecast.metadata.input_hash
+        raw = copy.deepcopy(HOURLY_RESPONSE)
+        raw["hourly"]["wind_speed_100m"][0] = 40.0
+        (self.cache_dir / f"{stem}.json").write_text(json.dumps(raw), encoding="utf-8")
+        with self.assertRaisesRegex(WeatherClientError, "checksum"):
+            client.load_cached_forecast(self.cache_dir / f"{stem}.meta.json")
+
+    def test_load_cached_forecast_rejects_changed_run_source_and_coordinates(self):
+        client = self.make_client(FakeOpener([BODY]))
+        forecast = client.fetch_forecast("turbine_1", ISSUE)
+        path = self.cache_dir / f"{forecast.metadata.input_hash}.meta.json"
+        original = forecast.metadata.to_json()
+        for changes in (
+            {"weather_run_time": "2026-02-01T12:00:00Z"},
+            {"turbine_id": "turbine_2"},
+            {"api_url": "https://archive-api.open-meteo.com/v1/archive"},
+            {"forecast_source": "weather_observation"},
+            {"publication_safety_delay_seconds": 0},
+        ):
+            with self.subTest(changes=changes):
+                path.write_text(json.dumps({**original, **changes}), encoding="utf-8")
+                with self.assertRaises(WeatherClientError):
+                    client.load_cached_forecast(path)
+
+    def test_verified_legacy_cache_can_still_be_loaded(self):
+        client = self.make_client(FakeOpener([BODY]))
+        forecast = client.fetch_forecast("turbine_1", ISSUE)
+        params = client._params(*client._coordinates("turbine_1"), forecast.metadata.weather_run_time)
+        params.pop("temperature_unit")
+        legacy_hash = client._input_hash("turbine_1", ISSUE, params)
+        legacy = {key: value for key, value in forecast.metadata.to_json().items() if key in (
+            "turbine_id", "issue_time", "weather_run_time", "provider", "model", "fetch_time", "input_hash"
+        )}
+        legacy["input_hash"] = legacy_hash
+        (self.cache_dir / f"{legacy_hash}.json").write_bytes(BODY)
+        path = self.cache_dir / f"{legacy_hash}.meta.json"
+        path.write_text(json.dumps(legacy), encoding="utf-8")
+        loaded = client.load_cached_forecast(path)
+        self.assertEqual(loaded.hourly, forecast.hourly)
+        self.assertEqual(loaded.metadata.forecast_source, FORECAST_SOURCE)
+
+    def test_rejects_nonfinite_weather_values(self):
+        client = self.make_client(FakeOpener([]))
+        for value in (float("nan"), float("inf"), -float("inf"), 10**400):
+            with self.subTest(value=str(value)[:30]):
+                raw = copy.deepcopy(HOURLY_RESPONSE)
+                raw["hourly"]["temperature_2m"][0] = value
+                with self.assertRaisesRegex(WeatherClientError, "non-finite"):
+                    client._parse_response(json.dumps(raw).encode("utf-8"), select_safe_run(ISSUE))
+
+    def test_rejects_duplicate_unsorted_nonhourly_and_wrong_run_times(self):
+        client = self.make_client(FakeOpener([]))
+        first, second = HOURLY_RESPONSE["hourly"]["time"]
+        for times in (
+            [first, first], [second, first], [first, second + 3600],
+            [first + 1, second + 1], [first + 0.5, second + 0.5],
+            [first - 86400 * 10, second - 86400 * 10],
+            [first + 86400 * 10, second + 86400 * 10],
+        ):
+            with self.subTest(times=times):
+                raw = copy.deepcopy(HOURLY_RESPONSE)
+                raw["hourly"]["time"] = times
+                with self.assertRaisesRegex(WeatherClientError, "valid times"):
+                    client._parse_response(json.dumps(raw).encode("utf-8"), select_safe_run(ISSUE))
+
+    def test_rejects_wrong_temperature_direction_pressure_and_time_units(self):
+        client = self.make_client(FakeOpener([]))
+        for variable, unit in (("temperature_2m", "F"), ("wind_direction_100m", "radian"),
+                               ("surface_pressure", "Pa"), ("time", "iso8601")):
+            with self.subTest(variable=variable):
+                raw = copy.deepcopy(HOURLY_RESPONSE)
+                raw["hourly_units"][variable] = unit
+                with self.assertRaisesRegex(WeatherClientError, "did not return"):
+                    client._parse_response(json.dumps(raw).encode("utf-8"), select_safe_run(ISSUE))
+
+    def test_null_tail_is_preserved_without_imputation(self):
+        raw = copy.deepcopy(HOURLY_RESPONSE)
+        for variable in HOURLY_VARIABLES:
+            raw["hourly"][variable][1] = None
+        client = self.make_client(FakeOpener([]))
+        _, rows = client._parse_response(json.dumps(raw).encode("utf-8"), select_safe_run(ISSUE))
+        self.assertEqual(rows[0].wind_speed_100m, 7.1)
+        self.assertIsNone(rows[1].wind_speed_100m)
+        self.assertIsNone(rows[1].temperature_2m)
+
+    def test_all_null_response_uses_one_cycle_fallback(self):
+        raw = copy.deepcopy(HOURLY_RESPONSE)
+        for variable in HOURLY_VARIABLES:
+            raw["hourly"][variable] = [None, None]
+        opener = FakeOpener([json.dumps(raw).encode("utf-8"), BODY])
+        forecast = self.make_client(opener).fetch_forecast("turbine_1", ISSUE)
+        self.assertEqual(len(opener.calls), 2)
+        self.assertEqual(forecast.metadata.weather_run_time, select_safe_run(ISSUE) - timedelta(hours=6))
 
 
 if __name__ == "__main__":

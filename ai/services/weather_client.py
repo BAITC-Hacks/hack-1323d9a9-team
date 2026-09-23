@@ -21,6 +21,13 @@ UTC = timezone.utc
 RUN_CYCLE = timedelta(hours=6)
 DEFAULT_PUBLICATION_SAFETY_DELAY = timedelta(hours=6)
 API_URL = "https://single-runs-api.open-meteo.com/v1/forecast"
+FORECAST_SOURCE = "open_meteo_single_runs"
+ARCHIVE_START = datetime(2024, 3, 14, tzinfo=UTC)
+# Open-Meteo describes the early archive as IFS 49r1 hindcasts. That cycle
+# became operational on 2024-11-12; do not replay its earlier hindcasts as
+# forecasts that were publicly available at the historical issue time.
+OPERATIONAL_ARCHIVE_START = datetime(2024, 11, 12, tzinfo=UTC)
+REQUESTED_HORIZON = timedelta(days=10)
 PROVIDER = "Open-Meteo"
 MODEL = "ecmwf_ifs"  # ECMWF IFS HRES 9 km in the Open-Meteo API.
 HOURLY_VARIABLES = (
@@ -97,8 +104,12 @@ class WeatherMetadata:
     model: str
     fetch_time: datetime
     input_hash: str
+    forecast_source: str = FORECAST_SOURCE
+    api_url: str = API_URL
+    publication_safety_delay_seconds: float = DEFAULT_PUBLICATION_SAFETY_DELAY.total_seconds()
+    raw_response_sha256: str | None = None
 
-    def to_json(self) -> dict[str, str]:
+    def to_json(self) -> dict[str, Any]:
         return {
             "turbine_id": self.turbine_id,
             "issue_time": _iso_utc(self.issue_time),
@@ -107,6 +118,10 @@ class WeatherMetadata:
             "model": self.model,
             "fetch_time": _iso_utc(self.fetch_time),
             "input_hash": self.input_hash,
+            "forecast_source": self.forecast_source,
+            "api_url": self.api_url,
+            "publication_safety_delay_seconds": self.publication_safety_delay_seconds,
+            "raw_response_sha256": self.raw_response_sha256,
         }
 
 
@@ -143,6 +158,7 @@ class OpenMeteoArchivedWeatherClient:
         opener: Callable[..., Any] = urlopen,
         sleep: Callable[[float], None] = time.sleep,
         clock: Callable[[], datetime] = lambda: datetime.now(UTC),
+        cache_only: bool = False,
     ) -> None:
         self.turbines_path = Path(turbines_path)
         self.cache_dir = Path(cache_dir)
@@ -159,20 +175,33 @@ class OpenMeteoArchivedWeatherClient:
         self.opener = opener
         self.sleep = sleep
         self.clock = clock
+        if not isinstance(cache_only, bool):
+            raise ValueError("cache_only must be a boolean")
+        self.cache_only = cache_only
 
     def fetch_forecast(self, turbine_id: str, issue_time: datetime) -> ArchivedWeatherForecast:
         """Get the safe run's full hourly forecast for a configured turbine."""
         issue = _as_utc(issue_time, "issue_time")
         latitude, longitude = self._coordinates(turbine_id)
         first_run = select_safe_run(issue, self.publication_safety_delay)
+        if first_run < OPERATIONAL_ARCHIVE_START:
+            raise RunUnavailableError(
+                f"Operational ECMWF Single Runs replay starts at {_iso_utc(OPERATIONAL_ARCHIVE_START)}; "
+                f"earlier IFS 49r1 hindcasts cannot be used for issue {_iso_utc(issue)}"
+            )
         unavailable: list[str] = []
         for run in (first_run, first_run - RUN_CYCLE):
+            if run < OPERATIONAL_ARCHIVE_START:
+                continue
             assert_no_leakage(run, issue, self.publication_safety_delay)
             params = self._params(latitude, longitude, run)
             input_hash = self._input_hash(turbine_id, issue, params)
             cached = self._load_cache(turbine_id, issue, run, input_hash)
             if cached is not None:
                 return cached
+            if self.cache_only:
+                unavailable.append(f"run {_iso_utc(run)} is not cached (cache_only=True)")
+                continue
             try:
                 raw_bytes = self._request(params, run)
                 raw_response, hourly = self._parse_response(raw_bytes, run)
@@ -187,6 +216,8 @@ class OpenMeteoArchivedWeatherClient:
                 model=MODEL,
                 fetch_time=_as_utc(self.clock(), "fetch_time"),
                 input_hash=input_hash,
+                publication_safety_delay_seconds=self.publication_safety_delay.total_seconds(),
+                raw_response_sha256=hashlib.sha256(raw_bytes).hexdigest(),
             )
             assert_no_leakage(metadata.weather_run_time, metadata.issue_time, self.publication_safety_delay)
             self._write_cache(input_hash, raw_bytes, metadata)
@@ -223,6 +254,7 @@ class OpenMeteoArchivedWeatherClient:
             "models": MODEL,
             "run": run.strftime("%Y-%m-%dT%H:%M"),  # API requires UTC without an offset.
             "wind_speed_unit": "ms",
+            "temperature_unit": "celsius",
             "timezone": "GMT",
             "timeformat": "unixtime",
             "forecast_days": "10",
@@ -249,7 +281,10 @@ class OpenMeteoArchivedWeatherClient:
                 with self.opener(request, timeout=self.timeout_seconds) as response:
                     return response.read()
             except HTTPError as exc:
-                detail = self._error_detail(exc.read())
+                try:
+                    detail = self._error_detail(exc.read())
+                finally:
+                    exc.close()
                 if exc.code == 404 or (
                     exc.code in (400, 422) and self._is_run_unavailable(detail)
                 ):
@@ -259,7 +294,7 @@ class OpenMeteoArchivedWeatherClient:
                         f"Open-Meteo request for run {_iso_utc(run)} failed after {attempt + 1} "
                         f"attempt(s) (HTTP {exc.code}: {detail})"
                     ) from exc
-            except (URLError, TimeoutError) as exc:
+            except (URLError, OSError) as exc:
                 if attempt == self.max_retries:
                     raise WeatherClientError(
                         f"Open-Meteo request for run {_iso_utc(run)} failed after {attempt + 1} "
@@ -305,9 +340,20 @@ class OpenMeteoArchivedWeatherClient:
         units = raw.get("hourly_units")
         if not isinstance(hourly, dict) or not isinstance(units, dict):
             raise WeatherClientError(f"Open-Meteo run {_iso_utc(run)} is missing hourly data or units")
-        for variable in HOURLY_VARIABLES[:3]:
-            if units.get(variable) != "m/s":
-                raise WeatherClientError(f"Open-Meteo run {_iso_utc(run)} did not return {variable} in m/s")
+        expected_units = {
+            "time": "unixtime",
+            "wind_speed_80m": "m/s",
+            "wind_speed_100m": "m/s",
+            "wind_speed_120m": "m/s",
+            "wind_direction_100m": "\u00b0",
+            "temperature_2m": "\u00b0C",
+            "surface_pressure": "hPa",
+        }
+        for variable, unit in expected_units.items():
+            if units.get(variable) != unit:
+                raise WeatherClientError(
+                    f"Open-Meteo run {_iso_utc(run)} did not return {variable} in {unit}"
+                )
         times = hourly.get("time")
         if not isinstance(times, list) or not times:
             raise WeatherClientError(f"Open-Meteo run {_iso_utc(run)} has no hourly valid times")
@@ -324,13 +370,32 @@ class OpenMeteoArchivedWeatherClient:
                 valid_time = datetime.fromtimestamp(epoch, UTC)
             except (OverflowError, OSError, ValueError) as exc:
                 raise WeatherClientError(f"Open-Meteo run {_iso_utc(run)} has an invalid valid time") from exc
+            if (
+                valid_time.minute or valid_time.second or valid_time.microsecond
+                or not run <= valid_time < run + REQUESTED_HORIZON
+                or (records and valid_time != records[-1].valid_time + timedelta(hours=1))
+            ):
+                raise WeatherClientError(
+                    f"Open-Meteo run {_iso_utc(run)} has non-hourly, unordered, "
+                    "or out-of-run valid times"
+                )
             values = {}
             for variable in HOURLY_VARIABLES:
                 value = hourly[variable][index]
                 if value is not None and (isinstance(value, bool) or not isinstance(value, (int, float))):
                     raise WeatherClientError(f"Open-Meteo run {_iso_utc(run)} has invalid {variable} data")
-                values[variable] = float(value) if value is not None else None
+                try:
+                    value = float(value) if value is not None else None
+                    if value is not None and not math.isfinite(value):
+                        raise ValueError("non-finite value")
+                except (OverflowError, ValueError) as exc:
+                    raise WeatherClientError(
+                        f"Open-Meteo run {_iso_utc(run)} has non-finite {variable} data"
+                    ) from exc
+                values[variable] = value
             records.append(HourlyWeather(valid_time=valid_time, **values))
+        if not any(row.wind_speed_100m is not None and row.temperature_2m is not None for row in records):
+            raise RunUnavailableError(f"run {_iso_utc(run)} has no usable wind and temperature forecasts")
         return raw, tuple(records)
 
     def _cache_paths(self, input_hash: str) -> tuple[Path, Path]:
@@ -342,8 +407,45 @@ class OpenMeteoArchivedWeatherClient:
         raw_path, meta_path = self._cache_paths(input_hash)
         if not raw_path.is_file() or not meta_path.is_file():
             return None
+        forecast = self.load_cached_forecast(meta_path)
+        if (
+            forecast.metadata.turbine_id != turbine_id
+            or forecast.metadata.issue_time != issue
+            or forecast.metadata.weather_run_time != run
+            or forecast.metadata.input_hash != input_hash
+        ):
+            raise WeatherClientError(f"Invalid weather cache entry {raw_path}: metadata does not match request")
+        return forecast
+
+    def load_cached_forecast(self, meta_path: Path | str) -> ArchivedWeatherForecast:
+        """Read a verified Single Runs cache entry for inference or training.
+
+        Reconstructing the request hash prevents a renamed observation file or
+        mismatched coordinates/run from being accepted as an archived forecast.
+        Older cache entries may omit provenance fields added in schema version 2;
+        their endpoint is still bound by the original request hash.
+        """
+        meta_path = Path(meta_path)
+        raw_path = meta_path.with_name(meta_path.name.removesuffix(".meta.json") + ".json")
         try:
+            if not meta_path.name.endswith(".meta.json"):
+                raise ValueError("expected a .meta.json cache metadata file")
             saved = json.loads(meta_path.read_text(encoding="utf-8"))
+            if not isinstance(saved, dict):
+                raise ValueError("metadata is not an object")
+            turbine_id = saved["turbine_id"]
+            issue = _as_utc(datetime.fromisoformat(saved["issue_time"]), "issue_time")
+            run = _as_utc(datetime.fromisoformat(saved["weather_run_time"]), "weather_run_time")
+            if run < OPERATIONAL_ARCHIVE_START or run.hour % 6 or run.minute or run.second or run.microsecond:
+                raise ValueError("weather_run_time predates operational IFS 49r1 or is not an ECMWF run cycle")
+            latitude, longitude = self._coordinates(turbine_id)
+            params = self._params(latitude, longitude, run)
+            input_hash = self._input_hash(turbine_id, issue, params)
+            # The original client relied on the API's Celsius default.
+            legacy_params = {key: value for key, value in params.items() if key != "temperature_unit"}
+            legacy_hash = self._input_hash(turbine_id, issue, legacy_params)
+            if saved.get("input_hash") == legacy_hash:
+                input_hash = legacy_hash
             expected = {
                 "turbine_id": turbine_id,
                 "issue_time": _iso_utc(issue),
@@ -354,13 +456,26 @@ class OpenMeteoArchivedWeatherClient:
             }
             if not isinstance(saved, dict) or any(saved.get(k) != v for k, v in expected.items()):
                 raise ValueError("metadata does not match request")
+            if meta_path.name != f"{input_hash}.meta.json":
+                raise ValueError("cache filename does not match request hash")
+            if saved.get("forecast_source", FORECAST_SOURCE) != FORECAST_SOURCE or saved.get("api_url", API_URL) != API_URL:
+                raise ValueError("metadata source is not Open-Meteo Single Runs")
+            if saved.get("publication_safety_delay_seconds", self.publication_safety_delay.total_seconds()) != self.publication_safety_delay.total_seconds():
+                raise ValueError("metadata publication delay does not match client policy")
             fetch_time = _as_utc(datetime.fromisoformat(saved["fetch_time"]), "fetch_time")
             raw_bytes = raw_path.read_bytes()
+            raw_hash = saved.get("raw_response_sha256")
+            if raw_hash is not None and raw_hash != hashlib.sha256(raw_bytes).hexdigest():
+                raise ValueError("raw response checksum does not match metadata")
         except (OSError, KeyError, TypeError, ValueError) as exc:
             raise WeatherClientError(f"Invalid weather cache entry {raw_path}: {exc}") from exc
         assert_no_leakage(run, issue, self.publication_safety_delay)
         raw_response, hourly = self._parse_response(raw_bytes, run)
-        metadata = WeatherMetadata(turbine_id, issue, run, PROVIDER, MODEL, fetch_time, input_hash)
+        metadata = WeatherMetadata(
+            turbine_id, issue, run, PROVIDER, MODEL, fetch_time, input_hash,
+            publication_safety_delay_seconds=self.publication_safety_delay.total_seconds(),
+            raw_response_sha256=raw_hash,
+        )
         return ArchivedWeatherForecast(metadata, hourly, raw_response)
 
     def _write_cache(self, input_hash: str, raw_bytes: bytes, metadata: WeatherMetadata) -> None:

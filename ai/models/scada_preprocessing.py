@@ -43,7 +43,7 @@ def _find_column(headers: Iterable[str], exact: tuple[str, ...], required_words:
         if name in normalised:
             return normalised[name]
     for normalised_name, original in normalised.items():
-        if all(word in normalised_name for word in required_words):
+        if required_words and all(word in normalised_name for word in required_words):
             return original
     raise ValueError(
         "Could not identify a required SCADA column. Available columns: "
@@ -70,10 +70,10 @@ def _resolve_columns(headers: list[str]) -> dict[str, str]:
 def _parse_datetime(value: str) -> datetime:
     cleaned = value.strip().replace("T", " ")
     try:
-        return datetime.fromisoformat(cleaned.replace("Z", "+00:00")).replace(tzinfo=None)
+        return datetime.fromisoformat(cleaned.replace("Z", "+00:00"))
     except ValueError:
         pass
-    for pattern in ("%d.%m.%Y %H:%M:%S", "%d.%m.%Y %H:%M", "%Y/%m/%d %H:%M:%S"):
+    for pattern in ("%Y-%m-%d %H:%M:%S", "%Y-%m-%d %H:%M", "%d.%m.%Y %H:%M:%S", "%d.%m.%Y %H:%M", "%Y/%m/%d %H:%M:%S"):
         try:
             return datetime.strptime(cleaned, pattern)
         except ValueError:
@@ -83,7 +83,10 @@ def _parse_datetime(value: str) -> datetime:
 
 def _parse_number(value: str) -> float:
     cleaned = value.strip().replace("\u00a0", "").replace(" ", "").replace(",", ".")
-    return float(cleaned)
+    numeric = float(cleaned)
+    if not math.isfinite(numeric):
+        raise ValueError("SCADA measurements must be finite")
+    return numeric
 
 
 def _hour_start(value: datetime) -> datetime:
@@ -141,17 +144,22 @@ def process_turbine(input_path: Path, output_path: Path, min_samples: int = 3) -
         for row in reader:
             raw_rows += 1
             try:
-                records.append((
+                record = (
                     _parse_datetime(row[columns["timestamp"]]),
                     _parse_number(row[columns["wind"]]),
                     _parse_number(row[columns["temperature"]]),
                     _parse_number(row[columns["power"]]),
-                ))
+                )
+                if record[0].replace(tzinfo=None) >= datetime(2026, 2, 1):
+                    continue
+                records.append(record)
                 parsed_rows += 1
             except (KeyError, TypeError, ValueError):
                 # Invalid rows cannot make a reliable hourly target; they are not imputed.
                 continue
 
+    if len({record[0].tzinfo is None for record in records}) > 1:
+        raise ValueError("Mixed timezone-aware and naive SCADA timestamps are ambiguous")
     records.sort(key=lambda record: record[0])
     timestamps = [record[0] for record in records]
     duplicate_timestamps = sum(current == previous for previous, current in zip(timestamps, timestamps[1:]))
@@ -160,8 +168,14 @@ def process_turbine(input_path: Path, output_path: Path, min_samples: int = 3) -
     missing = sum(max(0, round(gap.total_seconds() / 600) - 1) for gap in long_gaps)
 
     buckets: dict[datetime, list[tuple[float, float, float]]] = defaultdict(list)
+    unique_samples: dict[datetime, set[tuple[float, float, float]]] = defaultdict(set)
     for timestamp, wind, temperature, power in records:
-        buckets[_hour_start(timestamp)].append((wind, temperature, power))
+        unique_samples[timestamp].add((wind, temperature, power))
+    for timestamp, samples in unique_samples.items():
+        # A duplicated record is one measurement. Conflicting duplicates cannot
+        # supply a reliable target and must not inflate hourly coverage.
+        if len(samples) == 1:
+            buckets[_hour_start(timestamp)].append(next(iter(samples)))
 
     output_rows: list[dict[str, float | int | str]] = []
     for timestamp in sorted(buckets):

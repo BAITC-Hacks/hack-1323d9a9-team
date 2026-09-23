@@ -17,34 +17,38 @@
       "input": "C:\\Users\\raniz\\hack-1323d9a9-team\\data\\processed\\turbine_1_hourly.csv",
       "metrics": {
         "binned_wind_power_curve": {
-          "mae": 0.035472602981953136,
-          "r2": 0.9810745398137596,
-          "rmse": 0.04802435248100492
+          "mae": 0.035481107882067285,
+          "r2": 0.9699633814393563,
+          "rmse": 0.058458101805784514
         },
         "extra_trees": {
-          "mae": 0.01917437241369873,
-          "r2": 0.9922869104359491,
-          "rmse": 0.030658611408764785
+          "mae": 0.02236334535385014,
+          "r2": 0.9805160866417817,
+          "rmse": 0.04708225816895778
         },
         "hist_gradient_boosting": {
-          "mae": 0.019590481792895978,
-          "r2": 0.9925224012030145,
-          "rmse": 0.030186959604068045
+          "mae": 0.025666719782686163,
+          "r2": 0.977493378527627,
+          "rmse": 0.05060277607739203
         }
       },
       "random_seed": 42,
       "selected_model": "extra_trees",
       "selection_basis": "lowest clipped January 2026 validation MAE among sklearn regressors",
+      "selection_requires_targets_before": "2026-02-01 00:00:00",
       "split": {
         "dropped_rows": 0,
+        "training_end": "2025-12-31 23:00:00",
         "training_end_exclusive": "2026-01-01 00:00:00",
-        "training_rows": 13369,
-        "usable_rows": 13803,
+        "training_rows": 22999,
+        "training_start": "2023-03-11 00:00:00",
+        "usable_rows": 23743,
         "validation_end_exclusive": "2026-02-01 00:00:00",
-        "validation_rows": 434,
+        "validation_rows": 744,
         "validation_start": "2026-01-01 00:00:00"
       },
-      "target": "normalized_active_power"
+      "target": "normalized_active_power",
+      "timestamp_convention": "Source SCADA calendar; timezone is not assumed to be UTC."
     },
     "turbine_2": {
       "artifact": "C:\\Users\\raniz\\hack-1323d9a9-team\\ai\\models\\artifacts\\turbine_2.joblib",
@@ -61,34 +65,38 @@
       "input": "C:\\Users\\raniz\\hack-1323d9a9-team\\data\\processed\\turbine_2_hourly.csv",
       "metrics": {
         "binned_wind_power_curve": {
-          "mae": 0.0393821816231259,
-          "r2": 0.9739061517417974,
-          "rmse": 0.05688977344550136
+          "mae": 0.03922737585179388,
+          "r2": 0.9534139879253395,
+          "rmse": 0.07286953023725956
         },
         "extra_trees": {
-          "mae": 0.01939725285709478,
-          "r2": 0.9870849577328288,
-          "rmse": 0.040023314717348546
+          "mae": 0.024484158502810837,
+          "r2": 0.9679013086703413,
+          "rmse": 0.060486974991041914
         },
         "hist_gradient_boosting": {
-          "mae": 0.021128111252318577,
-          "r2": 0.9864677720896697,
-          "rmse": 0.04096847420756247
+          "mae": 0.028427477296700025,
+          "r2": 0.9613361531976786,
+          "rmse": 0.06638511822207945
         }
       },
       "random_seed": 42,
       "selected_model": "extra_trees",
       "selection_basis": "lowest clipped January 2026 validation MAE among sklearn regressors",
+      "selection_requires_targets_before": "2026-02-01 00:00:00",
       "split": {
         "dropped_rows": 0,
+        "training_end": "2025-12-31 23:00:00",
         "training_end_exclusive": "2026-01-01 00:00:00",
-        "training_rows": 14036,
-        "usable_rows": 14470,
+        "training_rows": 24199,
+        "training_start": "2023-03-11 00:00:00",
+        "usable_rows": 24943,
         "validation_end_exclusive": "2026-02-01 00:00:00",
-        "validation_rows": 434,
+        "validation_rows": 744,
         "validation_start": "2026-01-01 00:00:00"
       },
-      "target": "normalized_active_power"
+      "target": "normalized_active_power",
+      "timestamp_convention": "Source SCADA calendar; timezone is not assumed to be UTC."
     }
   }
 }

@@ -1,0 +1,186 @@
+{
+  "status": "COMPLETE",
+  "calendar_timezone": "Asia/Almaty",
+  "period_start": "2026-01-31T19:00:00+00:00",
+  "period_end_exclusive": "2026-02-28T19:00:00+00:00",
+  "horizon_hours": 48,
+  "issues": 28,
+  "complete": 28,
+  "forecast_rows": 2640,
+  "expected_hours_per_turbine": 672,
+  "unique_valid_hours": {
+    "turbine_1": 672,
+    "turbine_2": 672
+  },
+  "evaluation": "February actual power is not supplied; no February accuracy metric is claimed.",
+  "runs": [
+    {
+      "issue_time": "2026-01-31T18:00:00+00:00",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "C:\\Users\\raniz\\hack-1323d9a9-team\\data\\forecasts\\february\\forecast_20260131T180000Z_v1_83757a9913ee.json"
+    },
+    {
+      "issue_time": "2026-02-01T18:00:00+00:00",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "C:\\Users\\raniz\\hack-1323d9a9-team\\data\\forecasts\\february\\forecast_20260201T180000Z_v1_346dacd4fb9a.json"
+    },
+    {
+      "issue_time": "2026-02-02T18:00:00+00:00",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "C:\\Users\\raniz\\hack-1323d9a9-team\\data\\forecasts\\february\\forecast_20260202T180000Z_v1_7247915a8f9b.json"
+    },
+    {
+      "issue_time": "2026-02-03T18:00:00+00:00",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "C:\\Users\\raniz\\hack-1323d9a9-team\\data\\forecasts\\february\\forecast_20260203T180000Z_v1_abcbe16a41f4.json"
+    },
+    {
+      "issue_time": "2026-02-04T18:00:00+00:00",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "C:\\Users\\raniz\\hack-1323d9a9-team\\data\\forecasts\\february\\forecast_20260204T180000Z_v1_30b326835119.json"
+    },
+    {
+      "issue_time": "2026-02-05T18:00:00+00:00",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "C:\\Users\\raniz\\hack-1323d9a9-team\\data\\forecasts\\february\\forecast_20260205T180000Z_v1_3e4dbcd28a91.json"
+    },
+    {
+      "issue_time": "2026-02-06T18:00:00+00:00",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "C:\\Users\\raniz\\hack-1323d9a9-team\\data\\forecasts\\february\\forecast_20260206T180000Z_v1_1d8e5630027a.json"
+    },
+    {
+      "issue_time": "2026-02-07T18:00:00+00:00",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "C:\\Users\\raniz\\hack-1323d9a9-team\\data\\forecasts\\february\\forecast_20260207T180000Z_v1_2e85f8fe683d.json"
+    },
+    {
+      "issue_time": "2026-02-08T18:00:00+00:00",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "C:\\Users\\raniz\\hack-1323d9a9-team\\data\\forecasts\\february\\forecast_20260208T180000Z_v1_17333b42cff3.json"
+    },
+    {
+      "issue_time": "2026-02-09T18:00:00+00:00",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "C:\\Users\\raniz\\hack-1323d9a9-team\\data\\forecasts\\february\\forecast_20260209T180000Z_v1_72c3c061eba6.json"
+    },
+    {
+      "issue_time": "2026-02-10T18:00:00+00:00",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "C:\\Users\\raniz\\hack-1323d9a9-team\\data\\forecasts\\february\\forecast_20260210T180000Z_v1_c095d1cdd7cf.json"
+    },
+    {
+      "issue_time": "2026-02-11T18:00:00+00:00",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "C:\\Users\\raniz\\hack-1323d9a9-team\\data\\forecasts\\february\\forecast_20260211T180000Z_v1_70aa156f01e7.json"
+    },
+    {
+      "issue_time": "2026-02-12T18:00:00+00:00",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "C:\\Users\\raniz\\hack-1323d9a9-team\\data\\forecasts\\february\\forecast_20260212T180000Z_v1_45a99b234c0d.json"
+    },
+    {
+      "issue_time": "2026-02-13T18:00:00+00:00",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "C:\\Users\\raniz\\hack-1323d9a9-team\\data\\forecasts\\february\\forecast_20260213T180000Z_v1_d53ff0acb960.json"
+    },
+    {
+      "issue_time": "2026-02-14T18:00:00+00:00",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "C:\\Users\\raniz\\hack-1323d9a9-team\\data\\forecasts\\february\\forecast_20260214T180000Z_v1_fa4e75f18e1e.json"
+    },
+    {
+      "issue_time": "2026-02-15T18:00:00+00:00",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "C:\\Users\\raniz\\hack-1323d9a9-team\\data\\forecasts\\february\\forecast_20260215T180000Z_v1_98817eeb09aa.json"
+    },
+    {
+      "issue_time": "2026-02-16T18:00:00+00:00",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "C:\\Users\\raniz\\hack-1323d9a9-team\\data\\forecasts\\february\\forecast_20260216T180000Z_v1_1461938391f1.json"
+    },
+    {
+      "issue_time": "2026-02-17T18:00:00+00:00",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "C:\\Users\\raniz\\hack-1323d9a9-team\\data\\forecasts\\february\\forecast_20260217T180000Z_v1_c072dbba535c.json"
+    },
+    {
+      "issue_time": "2026-02-18T18:00:00+00:00",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "C:\\Users\\raniz\\hack-1323d9a9-team\\data\\forecasts\\february\\forecast_20260218T180000Z_v1_a263fdd2abec.json"
+    },
+    {
+      "issue_time": "2026-02-19T18:00:00+00:00",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "C:\\Users\\raniz\\hack-1323d9a9-team\\data\\forecasts\\february\\forecast_20260219T180000Z_v1_dd5e1b4c997d.json"
+    },
+    {
+      "issue_time": "2026-02-20T18:00:00+00:00",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "C:\\Users\\raniz\\hack-1323d9a9-team\\data\\forecasts\\february\\forecast_20260220T180000Z_v1_5d6b66e96e33.json"
+    },
+    {
+      "issue_time": "2026-02-21T18:00:00+00:00",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "C:\\Users\\raniz\\hack-1323d9a9-team\\data\\forecasts\\february\\forecast_20260221T180000Z_v1_ca0b855a6be5.json"
+    },
+    {
+      "issue_time": "2026-02-22T18:00:00+00:00",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "C:\\Users\\raniz\\hack-1323d9a9-team\\data\\forecasts\\february\\forecast_20260222T180000Z_v1_92ec5613e036.json"
+    },
+    {
+      "issue_time": "2026-02-23T18:00:00+00:00",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "C:\\Users\\raniz\\hack-1323d9a9-team\\data\\forecasts\\february\\forecast_20260223T180000Z_v1_a868c6111042.json"
+    },
+    {
+      "issue_time": "2026-02-24T18:00:00+00:00",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "C:\\Users\\raniz\\hack-1323d9a9-team\\data\\forecasts\\february\\forecast_20260224T180000Z_v1_e9b69054fbc9.json"
+    },
+    {
+      "issue_time": "2026-02-25T18:00:00+00:00",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "C:\\Users\\raniz\\hack-1323d9a9-team\\data\\forecasts\\february\\forecast_20260225T180000Z_v1_3c5cd8489903.json"
+    },
+    {
+      "issue_time": "2026-02-26T18:00:00+00:00",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "C:\\Users\\raniz\\hack-1323d9a9-team\\data\\forecasts\\february\\forecast_20260226T180000Z_v1_717157fd4ba4.json"
+    },
+    {
+      "issue_time": "2026-02-27T18:00:00+00:00",
+      "status": "COMPLETE",
+      "message": "Forecast completed",
+      "artifact": "C:\\Users\\raniz\\hack-1323d9a9-team\\data\\forecasts\\february\\forecast_20260227T180000Z_v1_9ef15af966fe.json"
+    }
+  ]
+}

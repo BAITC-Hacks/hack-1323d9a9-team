@@ -58,6 +58,8 @@ class DatasetSplit:
     validation_targets: list[float]
     usable_rows: int
     dropped_rows: int
+    train_timestamps: list[datetime]
+    validation_timestamps: list[datetime]
 
 
 class BinnedWindPowerCurve:
@@ -82,7 +84,7 @@ class BinnedWindPowerCurve:
     def predict(self, features: Iterable[list[float]]) -> list[float]:
         if not hasattr(self, "bin_means_"):
             raise ValueError("The baseline must be fitted before prediction")
-        return [self._prediction_for_bin(self._bin(row[0])) for row in features]
+        return clip_predictions(self._prediction_for_bin(self._bin(row[0])) for row in features)
 
     def _bin(self, wind_speed: float) -> int:
         return math.floor(wind_speed / self.bin_width)
@@ -123,6 +125,8 @@ def _parse_usable_row(row: dict[str, str]) -> tuple[datetime, list[float], float
         return None
     if not all(math.isfinite(value) for value in (*features, target)):
         return None
+    if not 0 <= target <= 1:
+        return None
     return timestamp, features, target
 
 
@@ -133,6 +137,9 @@ def load_chronological_split(path: Path) -> DatasetSplit:
     validation_features: list[list[float]] = []
     validation_targets: list[float] = []
     usable_rows = dropped_rows = 0
+    train_timestamps: list[datetime] = []
+    validation_timestamps: list[datetime] = []
+    seen: dict[datetime, tuple[list[float], float]] = {}
 
     with path.open("r", encoding="utf-8", newline="") as stream:
         for row in csv.DictReader(stream):
@@ -140,27 +147,48 @@ def load_chronological_split(path: Path) -> DatasetSplit:
             if parsed is None:
                 dropped_rows += 1
                 continue
-            usable_rows += 1
             timestamp, features, target = parsed
-            if timestamp < TRAIN_END_EXCLUSIVE:
+            # Calendar boundaries belong to the source SCADA clock. Do not
+            # silently reinterpret a timezone-naive export as UTC.
+            calendar_time = timestamp.replace(tzinfo=None)
+            if calendar_time in seen:
+                if seen[calendar_time] != (features, target):
+                    raise ValueError(f"Conflicting duplicate SCADA timestamp: {timestamp}")
+                dropped_rows += 1
+                continue
+            seen[calendar_time] = (features, target)
+            if calendar_time >= VALIDATION_END_EXCLUSIVE:
+                dropped_rows += 1
+                continue
+            usable_rows += 1
+            if calendar_time < TRAIN_END_EXCLUSIVE:
                 train_features.append(features)
                 train_targets.append(target)
-            elif VALIDATION_START <= timestamp < VALIDATION_END_EXCLUSIVE:
+                train_timestamps.append(timestamp)
+            elif VALIDATION_START <= calendar_time < VALIDATION_END_EXCLUSIVE:
                 validation_features.append(features)
                 validation_targets.append(target)
+                validation_timestamps.append(timestamp)
 
     if not train_features:
         raise ValueError(f"No usable training rows before 2026-01-01 in {path}")
     if not validation_features:
         raise ValueError(f"No usable January 2026 validation rows in {path}")
     return DatasetSplit(
-        train_features, train_targets, validation_features, validation_targets, usable_rows, dropped_rows
+        train_features, train_targets, validation_features, validation_targets, usable_rows, dropped_rows,
+        train_timestamps, validation_timestamps,
     )
 
 
 def clip_predictions(predictions: Iterable[float]) -> list[float]:
     """Enforce the normalized power output range at every evaluation/inference use."""
-    return [min(1.0, max(0.0, float(value))) for value in predictions]
+    result = []
+    for value in predictions:
+        numeric = float(value)
+        if not math.isfinite(numeric):
+            raise ValueError("Power predictions must be finite before clipping")
+        result.append(min(1.0, max(0.0, numeric)))
+    return result
 
 
 def validation_metrics(targets: list[float], predictions: Iterable[float]) -> dict[str, float]:
@@ -176,7 +204,7 @@ def _candidate_models() -> dict[str, object]:
     return {
         "extra_trees": ClippedRegressor(
             ExtraTreesRegressor(
-                n_estimators=300,
+                n_estimators=128,
                 min_samples_leaf=2,
                 random_state=RANDOM_SEED,
                 n_jobs=1,
@@ -187,6 +215,8 @@ def _candidate_models() -> dict[str, object]:
                 max_iter=300,
                 l2_regularization=0.1,
                 random_state=RANDOM_SEED,
+                # sklearn's automatic early stopping creates a random holdout.
+                early_stopping=False,
             )
         ),
     }
@@ -221,6 +251,8 @@ def train_turbine(input_path: Path, artifact_path: Path) -> dict[str, object]:
         "features": list(FEATURE_COLUMNS),
         "target": TARGET_COLUMN,
         "split": {
+            "training_start": min(split.train_timestamps).isoformat(sep=" "),
+            "training_end": max(split.train_timestamps).isoformat(sep=" "),
             "training_end_exclusive": TRAIN_END_EXCLUSIVE.isoformat(sep=" "),
             "validation_start": VALIDATION_START.isoformat(sep=" "),
             "validation_end_exclusive": VALIDATION_END_EXCLUSIVE.isoformat(sep=" "),
@@ -233,6 +265,8 @@ def train_turbine(input_path: Path, artifact_path: Path) -> dict[str, object]:
         "metrics": model_metrics,
         "selected_model": selected_name,
         "selection_basis": "lowest clipped January 2026 validation MAE among sklearn regressors",
+        "selection_requires_targets_before": VALIDATION_END_EXCLUSIVE.isoformat(sep=" "),
+        "timestamp_convention": "Source SCADA calendar; timezone is not assumed to be UTC.",
     }
 
 

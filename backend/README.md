@@ -1,15 +1,13 @@
 # Backend
 
-Backend part of the HackAlem AI project.
-
-The framework, API structure and business logic will be selected after receiving the hackathon case.
+FastAPI interface for the forecasting workflow.
 
 ## Forecast API
 
 Install `requirements.txt`, then run:
 
 ```powershell
-uvicorn backend.app.main:app --reload
+python -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8000
 ```
 
 The API exposes `/health`, `/api/forecast/run`, `/api/forecast/latest`, and

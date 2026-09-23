@@ -1,20 +1,14 @@
-# AI
+# Forecasting pipeline
 
-AI-related components of the project.
+- `models/scada_preprocessing.py`: finite, hourly SCADA targets; no gap filling.
+- `models/baseline_forecasting.py`: measured-weather comparison models.
+- `models/train.py`: verified archived-weather training, local-time joins,
+  chronological validation and independent production artifacts.
+- `services/weather_client.py`: explicit historical ECMWF runs and verified cache.
+- `services/archive_download.py`: resumable historical cache population.
+- `services/forecast_agent.py`: weather → validation → features → inference →
+  output validation → atomic save; updated inputs receive new versions.
+- `services/replay.py`: daily 24/48-hour forecasts across local February 2026.
 
-This directory may contain:
-
-- AI API integrations
-- prompts
-- AI services
-- model-related logic
-
-The final implementation will depend on the selected hackathon case.
-
-## Historical SCADA baseline
-
-Run `python -m ai.models.baseline_forecasting` to train deterministic
-ExtraTrees and histogram-gradient-boosting candidates for each turbine. It
-uses measured historical SCADA wind speed and ambient temperature, so it is a
-validation baseline only—not a production weather-forecast model. Artifacts
-and January 2026 validation metrics are written to `ai/models/artifacts/`.
+Commands, source semantics, validation rules and limitations are documented in
+the [repository README](../README.md). No LLM API key is required.
