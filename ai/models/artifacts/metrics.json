@@ -1,0 +1,214 @@
+{
+  "archived_weather": {
+    "turbine_1": {
+      "cache_statistics": {
+        "cache_entries": 0,
+        "rejected_rows": 0
+      },
+      "result": null,
+      "rows_by_lead": {
+        "24": 0,
+        "48": 0
+      }
+    },
+    "turbine_2": {
+      "cache_statistics": {
+        "cache_entries": 0,
+        "rejected_rows": 0
+      },
+      "result": null,
+      "rows_by_lead": {
+        "24": 0,
+        "48": 0
+      }
+    }
+  },
+  "archived_weather_description": "Open-Meteo Previous Runs cached forecast values only. Every row uses a weather_run_time available by issue_time; actual weather is never substituted.",
+  "features": [
+    "wind_speed_80m",
+    "wind_speed_100m",
+    "wind_speed_120m",
+    "wind_direction_100m",
+    "temperature_2m",
+    "surface_pressure",
+    "hour_sin",
+    "hour_cos",
+    "day_of_year_sin",
+    "day_of_year_cos"
+  ],
+  "forecast_source": {
+    "cache_dir": "C:\\Users\\raniz\\hack-1323d9a9-team\\data\\weather_cache",
+    "model": "ecmwf_ifs",
+    "provider": "Open-Meteo"
+  },
+  "lead_time_semantics": "Forecast lead is valid_time - issue_time. Only cached rows within \u00b13h of 24h or 48h are eligible.",
+  "scada_weather_baseline": {
+    "baseline_type": "historical_measured_scada_weather",
+    "important_limitation": "Historical measured-SCADA-weather baseline only; production inference must use archived weather forecasts available at issue time.",
+    "turbines": {
+      "turbine_1": {
+        "artifact": "C:\\Users\\raniz\\hack-1323d9a9-team\\ai\\models\\artifacts\\turbine_1.joblib",
+        "data_source": "measured_historical_scada_weather",
+        "features": [
+          "mean_wind_speed",
+          "mean_ambient_temperature",
+          "hour_sin",
+          "hour_cos",
+          "day_of_year_sin",
+          "day_of_year_cos"
+        ],
+        "important_limitation": "Historical measured-SCADA-weather baseline only; production inference must use archived weather forecasts available at issue time.",
+        "input": "C:\\Users\\raniz\\hack-1323d9a9-team\\data\\processed\\turbine_1_hourly.csv",
+        "metrics": {
+          "binned_wind_power_curve": {
+            "mae": 0.035472602981953136,
+            "r2": 0.9810745398137596,
+            "rmse": 0.04802435248100492
+          },
+          "extra_trees": {
+            "mae": 0.01917437241369873,
+            "r2": 0.9922869104359491,
+            "rmse": 0.030658611408764785
+          },
+          "hist_gradient_boosting": {
+            "mae": 0.019590481792895978,
+            "r2": 0.9925224012030145,
+            "rmse": 0.030186959604068045
+          }
+        },
+        "random_seed": 42,
+        "selected_model": "extra_trees",
+        "selection_basis": "lowest clipped January 2026 validation MAE among sklearn regressors",
+        "split": {
+          "dropped_rows": 0,
+          "training_end_exclusive": "2026-01-01 00:00:00",
+          "training_rows": 13369,
+          "usable_rows": 13803,
+          "validation_end_exclusive": "2026-02-01 00:00:00",
+          "validation_rows": 434,
+          "validation_start": "2026-01-01 00:00:00"
+        },
+        "target": "normalized_active_power"
+      },
+      "turbine_2": {
+        "artifact": "C:\\Users\\raniz\\hack-1323d9a9-team\\ai\\models\\artifacts\\turbine_2.joblib",
+        "data_source": "measured_historical_scada_weather",
+        "features": [
+          "mean_wind_speed",
+          "mean_ambient_temperature",
+          "hour_sin",
+          "hour_cos",
+          "day_of_year_sin",
+          "day_of_year_cos"
+        ],
+        "important_limitation": "Historical measured-SCADA-weather baseline only; production inference must use archived weather forecasts available at issue time.",
+        "input": "C:\\Users\\raniz\\hack-1323d9a9-team\\data\\processed\\turbine_2_hourly.csv",
+        "metrics": {
+          "binned_wind_power_curve": {
+            "mae": 0.0393821816231259,
+            "r2": 0.9739061517417974,
+            "rmse": 0.05688977344550136
+          },
+          "extra_trees": {
+            "mae": 0.01939725285709478,
+            "r2": 0.9870849577328288,
+            "rmse": 0.040023314717348546
+          },
+          "hist_gradient_boosting": {
+            "mae": 0.021128111252318577,
+            "r2": 0.9864677720896697,
+            "rmse": 0.04096847420756247
+          }
+        },
+        "random_seed": 42,
+        "selected_model": "extra_trees",
+        "selection_basis": "lowest clipped January 2026 validation MAE among sklearn regressors",
+        "split": {
+          "dropped_rows": 0,
+          "training_end_exclusive": "2026-01-01 00:00:00",
+          "training_rows": 14036,
+          "usable_rows": 14470,
+          "validation_end_exclusive": "2026-02-01 00:00:00",
+          "validation_rows": 434,
+          "validation_start": "2026-01-01 00:00:00"
+        },
+        "target": "normalized_active_power"
+      }
+    }
+  },
+  "selected_models": {
+    "turbine_1": {
+      "artifact": "C:\\Users\\raniz\\hack-1323d9a9-team\\ai\\models\\artifacts\\turbine_1.joblib",
+      "features": [
+        "mean_wind_speed",
+        "mean_ambient_temperature",
+        "hour_sin",
+        "hour_cos",
+        "day_of_year_sin",
+        "day_of_year_cos"
+      ],
+      "limitation": "No archived forecast rows cover both training and January 2026 validation; measured-SCADA-weather baseline retained as fallback.",
+      "metrics": {
+        "mae": 0.01917437241369873,
+        "r2": 0.9922869104359491,
+        "rmse": 0.030658611408764785
+      },
+      "model_source": "scada_weather_baseline_fallback",
+      "selected_model": "extra_trees",
+      "training_date_range": {
+        "end": "2025-12-31T23:00:00+00:00",
+        "rows": 13369,
+        "start": "2023-03-11T10:00:00+00:00"
+      },
+      "validation_period": {
+        "end_exclusive": "2026-02-01 00:00:00",
+        "start": "2026-01-01 00:00:00"
+      }
+    },
+    "turbine_2": {
+      "artifact": "C:\\Users\\raniz\\hack-1323d9a9-team\\ai\\models\\artifacts\\turbine_2.joblib",
+      "features": [
+        "mean_wind_speed",
+        "mean_ambient_temperature",
+        "hour_sin",
+        "hour_cos",
+        "day_of_year_sin",
+        "day_of_year_cos"
+      ],
+      "limitation": "No archived forecast rows cover both training and January 2026 validation; measured-SCADA-weather baseline retained as fallback.",
+      "metrics": {
+        "mae": 0.01939725285709478,
+        "r2": 0.9870849577328288,
+        "rmse": 0.040023314717348546
+      },
+      "model_source": "scada_weather_baseline_fallback",
+      "selected_model": "extra_trees",
+      "training_date_range": {
+        "end": "2025-12-31T23:00:00+00:00",
+        "rows": 14036,
+        "start": "2023-03-11T10:00:00+00:00"
+      },
+      "validation_period": {
+        "end_exclusive": "2026-02-01 00:00:00",
+        "start": "2026-01-01 00:00:00"
+      }
+    }
+  },
+  "training_date_range": {
+    "turbine_1": {
+      "end": "2025-12-31T23:00:00+00:00",
+      "rows": 13369,
+      "start": "2023-03-11T10:00:00+00:00"
+    },
+    "turbine_2": {
+      "end": "2025-12-31T23:00:00+00:00",
+      "rows": 14036,
+      "start": "2023-03-11T10:00:00+00:00"
+    }
+  },
+  "training_timestamp_convention": "Processed SCADA timestamps are treated as UTC.",
+  "validation_period": {
+    "end_exclusive": "2026-02-01 00:00:00",
+    "start": "2026-01-01 00:00:00"
+  }
+}
