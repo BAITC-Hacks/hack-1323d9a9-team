@@ -25,3 +25,6 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Downloaded archived weather responses and metadata
+data/weather_cache/

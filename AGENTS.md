@@ -3,7 +3,7 @@
 ## Project goal
 
 Build an Agentic AI system that forecasts hourly normalized wind-turbine
-active power for 24–48 hour horizons for two turbines.
+active power for 24-48 hour horizons for two turbines.
 
 ## Hard constraints
 
